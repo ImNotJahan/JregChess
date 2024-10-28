@@ -14,6 +14,8 @@ public class SuicideBomber extends Pawn {
 
     @Override
     public void kill() {
+        Main.game.giveGold(1);
+
         if(position.getLocation() == Board.BoardType.Normal) {
             position.changeBoard(Board.BoardType.Heaven);
             Main.game.heaven.addPiece(getPosition(), this);
