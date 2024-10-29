@@ -57,5 +57,7 @@ public abstract class Piece {
         }
     }
 
+    public void handleMove(Position to, Position from, Board board){}
+
     public abstract Icon getIcon();
 }

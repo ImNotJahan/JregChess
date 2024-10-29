@@ -3,6 +3,7 @@ package main.java.UI;
 import main.java.Board.Board;
 import main.java.Gameplay.GameState;
 import main.java.Pieces.Piece;
+import main.java.UI.Components.TileComponent;
 import main.java.Util.Position;
 
 import javax.swing.*;

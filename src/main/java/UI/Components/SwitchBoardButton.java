@@ -1,7 +1,8 @@
-package main.java.UI;
+package main.java.UI.Components;
 
 import main.java.Board.Board;
 import main.java.Main;
+import main.java.UI.BoardGUI;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

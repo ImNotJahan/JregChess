@@ -22,6 +22,8 @@ public class Board {
         Piece piece = getPieceAt(from);
         setPieceAt(to, piece);
 
+        piece.handleMove(to, from, this);
+
         removePiece(from);
 
         return true;

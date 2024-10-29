@@ -1,7 +1,6 @@
-package main.java.UI;
+package main.java.UI.Components;
 
 import main.java.Gameplay.GameState;
-import main.java.Main;
 import main.java.Pieces.Piece;
 
 import javax.swing.*;

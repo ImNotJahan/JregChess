@@ -1,6 +1,8 @@
 package main.java.UI;
 
 import main.java.Gameplay.GameState;
+import main.java.UI.Components.MoneyLabel;
+import main.java.UI.Components.SwitchBoardButton;
 
 import javax.swing.*;
 import java.awt.*;

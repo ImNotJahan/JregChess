@@ -1,4 +1,4 @@
-package main.java.UI;
+package main.java.UI.Components;
 
 import main.java.Gameplay.GameState;
 
