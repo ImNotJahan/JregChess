@@ -1,8 +1,6 @@
 package main.java.UI;
 
 import main.java.Pieces.*;
-import main.java.Pieces.NPCs.Placeholder;
-import main.java.Pieces.Upgrades.*;
 import main.java.UI.Components.UpgradeButton;
 
 import javax.swing.*;
@@ -42,16 +40,5 @@ public class SkillTree extends JFrame {
         add(new JLabel("Each"));
         add(new JLabel("Costs"));
         add(new JLabel("5GP"));
-    }
-
-    public static Piece pieceFromId(String id){
-        return switch (id){
-            case "suicide-bomber" -> new SuicideBomber(Piece.Color.White);
-            case "knight-queen" -> new KnightQueen(Piece.Color.White);
-            case "bishop-knight" -> new BishopKnight(Piece.Color.White);
-            case "rook-knight" -> new RookKnight(Piece.Color.White);
-            case "angry-rook" -> new AngryRook(Piece.Color.White);
-            default -> new Placeholder();
-        };
     }
 }

@@ -4,7 +4,9 @@ import main.java.Board.Board;
 import main.java.Main;
 import main.java.Pieces.Piece;
 import main.java.UI.BoardGUI;
+import main.java.UI.Shop;
 import main.java.UI.SkillTree;
+import main.java.Util.IDs;
 import main.java.Util.Position;
 
 import javax.swing.*;
@@ -43,7 +45,6 @@ public class GameState {
         };
     }
 
-    private boolean pieceSelected = false;
     private Position lastClicked;
 
     private boolean whiteToMove = true;
@@ -56,18 +57,33 @@ public class GameState {
         return whiteToMove;
     }
 
-    private boolean upgrading = false;
     private String[] upgradingFrom;
     private String upgradingTo;
+
+    private enum Action { Nothing, Moving, Buying, Upgrading };
+    private Action action = Action.Nothing;
 
     public void nowUpgrading(String[] from, String to){
         upgradingFrom = from;
         upgradingTo = to;
-        upgrading = true;
+        action = Action.Upgrading;
+    }
+
+    private int itemBeingBoughtCost;
+    private String itemBeingBoughtId;
+
+    public void nowBuying(String id, int cost) {
+        action = Action.Buying;
+        itemBeingBoughtCost = cost;
+        itemBeingBoughtId = id;
     }
 
     public boolean isUpgrading(){
-        return upgrading;
+        return action == Action.Upgrading;
+    }
+
+    public boolean isBuying(){
+        return action == Action.Buying;
     }
 
     public boolean upgradingFromThisP(String simpleClassName){
@@ -85,11 +101,16 @@ public class GameState {
             JOptionPane.showMessageDialog(gui, "Black wins!");
     }
 
+    private int funds(){
+        if(whiteToMove) return whiteGP;
+        return blackGP;
+    }
+
     private void handleUpgrading(int x, int y){
         Board board = getCurrentBoard();
         Position pos = new Position(x, y);
 
-        upgrading = false;
+        action = Action.Nothing;
 
         if(whiteToMove && whiteGP < 5) return;
         if(!whiteToMove && blackGP < 5) return;
@@ -101,16 +122,38 @@ public class GameState {
         if(whiteToMove){
             whiteGP -= 5;
             board.removePiece(pos);
-            board.addPiece(pos, SkillTree.pieceFromId(upgradingTo));
+            board.addPiece(pos, IDs.pieceFromId(upgradingTo));
         } else{
             blackGP -= 5;
             board.removePiece(pos);
 
-            Piece piece = SkillTree.pieceFromId(upgradingTo);
+            Piece piece = IDs.pieceFromId(upgradingTo);
             piece.setColor(Piece.Color.Black);
 
             board.addPiece(pos, piece);
         }
+    }
+
+    private void handleBuying(int x, int y){
+        action = Action.Nothing;
+
+        Board board = getCurrentBoard();
+        Position pos = new Position(x, y);
+
+        if(funds() < itemBeingBoughtCost) return;
+        if(board.pieceAt(pos)) return;
+
+        withdraw(itemBeingBoughtCost);
+
+        Piece piece = IDs.pieceFromId(itemBeingBoughtId);
+
+        if(!whiteToMove) piece.setColor(Piece.Color.Black);
+
+        board.addPiece(pos, piece);
+    }
+
+    public void withdraw(int amount){
+        giveGold(-amount);
     }
 
     public void giveGold(int amount){
@@ -119,18 +162,21 @@ public class GameState {
     }
 
     public void handleClick(int x, int y){
-        if(upgrading) {
+        if(action == Action.Upgrading) {
             handleUpgrading(x, y);
+            return;
+        } else if(action == Action.Buying){
+            handleBuying(x, y);
             return;
         }
 
         Board board = getCurrentBoard();
         Position pos = new Position(x, y);
 
-        if(pieceSelected){
+        if(action == Action.Moving){
             if(board.movePiece(pos, lastClicked))
                 whiteToMove = !whiteToMove;
-            pieceSelected = false;
+            action = Action.Nothing;
             lastClicked = null;
         } else {
             if(board.pieceAt(pos)){
@@ -138,7 +184,7 @@ public class GameState {
                 if(board.getPieceAt(pos).getColor() == Piece.Color.Black && whiteToMove) return;
                 if(board.getPieceAt(pos).getColor() == Piece.Color.NPC) return;
 
-                pieceSelected = true;
+                action = Action.Moving;
                 lastClicked = new Position(x, y);
             }
         }

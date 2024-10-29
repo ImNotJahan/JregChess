@@ -75,6 +75,8 @@ public class BoardGUI extends JFrame {
                                 (piece.getColor() == Piece.Color.Black && !game.isWhiteToMove()), game);
                     else
                         board[y][x].highlight(false, game);
+                } else if(game.isBuying()){
+                    board[y][x].highlight(!boardObj.pieceAt(pos), game);
                 }
                 else {
                     board[y][x].highlight(boardObj.validMove(pos, game.getLastClicked()), game);

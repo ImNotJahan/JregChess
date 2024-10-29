@@ -8,13 +8,15 @@ import main.java.Board.Board;
 import javax.swing.*;
 
 public class Pawn extends Piece {
+    protected  boolean moved = false;
+
     public Pawn(Color color) {
         super(color);
     }
 
-    protected boolean moved(){
-        if(getColor() == Color.White) return position.getY() != 6;
-        else return position.getY() != 1;
+    @Override
+    public void handleMove(Position to, Position from, Board board) {
+        moved = true;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class Pawn extends Piece {
             if(diff.getX() != 0) return false;
             if(diff.getY() > 2) return false;
             if(diff.getY() <= 0) return false;
-            if(diff.getY() == 2 && moved()) return false;
+            if(diff.getY() == 2 && moved) return false;
             if(getColor() == Color.White)
                 if(diff.getY() == 2 && board.pieceAt(to.add(0, -1))) return false;
             else

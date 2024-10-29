@@ -1,10 +1,6 @@
 package main.java.UI;
 
-import main.java.Pieces.*;
-import main.java.Pieces.NPCs.Placeholder;
-import main.java.Pieces.Upgrades.*;
 import main.java.UI.Components.BuyButton;
-import main.java.UI.Components.UpgradeButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,35 +20,18 @@ public class Shop extends JFrame {
     }
 
     private void init(){
-        products[0] = new UpgradeButton("suicide-bomber", Pawn.class.getSimpleName());
-        products[1] = new UpgradeButton("centaur", Pawn.class.getSimpleName());
-        upgrades[2] = new UpgradeButton("unicorn", Knight.class.getSimpleName());
-        upgrades[3] = new UpgradeButton("trojan-horse", Knight.class.getSimpleName());
-        upgrades[4] = new UpgradeButton("rook-knight", Knight.class.getSimpleName(), Rook.class.getSimpleName());
-        upgrades[5] = new UpgradeButton("bishop-knight", Bishop.class.getSimpleName(), Knight.class.getSimpleName());
-        upgrades[6] = new UpgradeButton("necromancer", Pawn.class.getSimpleName());
-        upgrades[7] = new UpgradeButton("super-bishop", Pawn.class.getSimpleName());
-        upgrades[8] = new UpgradeButton("super-king", Pawn.class.getSimpleName());
-        upgrades[9] = new UpgradeButton("ball-queen", Pawn.class.getSimpleName());
-        upgrades[10] = new UpgradeButton("knight-queen", Queen.class.getSimpleName(), Knight.class.getSimpleName());
-        upgrades[11] = new UpgradeButton("angry-rook", Rook.class.getSimpleName());
-        upgrades[12] = new UpgradeButton("rook-tower", Pawn.class.getSimpleName());
+        products[0] = new BuyButton("pawn", 2);
+        products[1] = new BuyButton("rook", 10);
+        products[2] = new BuyButton("knight", 5);
+        products[3] = new BuyButton("bishop", 6);
+        products[4] = new BuyButton("king", 12);
+        products[5] = new BuyButton("queen", 20);
+        products[6] = new BuyButton("rook-knight", 16);
+        products[7] = new BuyButton("bishop-knight", 12);
+        products[8] = new BuyButton("knight-queen", 30);
 
-        for(UpgradeButton upgrade : upgrades) add(upgrade);
-
-        add(new JLabel("Each"));
-        add(new JLabel("Costs"));
-        add(new JLabel("5GP"));
+        for(BuyButton product : products) add(product);
     }
 
-    public static Piece pieceFromId(String id){
-        return switch (id){
-            case "suicide-bomber" -> new SuicideBomber(Piece.Color.White);
-            case "knight-queen" -> new KnightQueen(Piece.Color.White);
-            case "bishop-knight" -> new BishopKnight(Piece.Color.White);
-            case "rook-knight" -> new RookKnight(Piece.Color.White);
-            case "angry-rook" -> new AngryRook(Piece.Color.White);
-            default -> new Placeholder();
-        };
-    }
+
 }
