@@ -7,7 +7,7 @@ import main.java.Util.Position;
 public class Board {
     public enum BoardType { Normal, Heaven, Hell };
     private final Piece[][] pieces = new Piece[8][8];
-    private BoardType type;
+    private final BoardType type;
 
     public Board(BoardType type){
         this.type = type;
