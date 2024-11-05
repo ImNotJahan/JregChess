@@ -176,7 +176,7 @@ public class GameState {
         Position pos = new Position(x, y);
 
         if(action == Action.Moving){
-            if(board.movePiece(pos, lastClicked))
+            if(board.movePiece(pos, lastClicked, true))
                 whiteToMove = !whiteToMove;
             action = Action.Nothing;
             lastClicked = null;

@@ -27,10 +27,15 @@ public class Board {
     }
 
     // board makes sure no taking of our own pieces and on board
-    public boolean movePiece(Position to, Position from){
+    public boolean movePiece(Position to, Position from, boolean wasClicked){
         if(!validMove(to, from)) return false;
 
         Piece piece = getPieceAt(from);
+
+        if(wasClicked && piece instanceof LargePiece) {
+            Position diff = ((LargePiece) piece).getDiff(((LargePiece) piece).getId());
+            return movePiece(to.difference(diff), from.difference(diff));
+        }
 
         if(!takePiece(to, piece)) return true;
 
@@ -41,6 +46,10 @@ public class Board {
         removePiece(from);
 
         return true;
+    }
+
+    public boolean movePiece(Position to, Position from){
+        return movePiece(to, from, false);
     }
 
     public boolean validMove(Position to, Position from) {

@@ -18,14 +18,19 @@ public abstract class LargePiece extends Piece {
 
     @Override
     public void moveTo(Position to) {
+        super.moveTo(to);
+
         if(id != 0) return;
 
         Board board = Main.game.getCurrentBoard();
 
         for(int i = 1; i < relatedPieces.length; i++){
-            Position diff = new Position(i % getWidth(), Math.floorDiv(i, getWidth()));
-            board.movePiece(to.add(diff), relatedPieces[i].getPosition());
+            board.movePiece(to.add(getDiff(i)), relatedPieces[i].getPosition());
         }
+    }
+
+    public Position getDiff(int id){
+        return new Position(id % getWidth(), Math.floorDiv(id, getWidth()));
     }
 
     public void setPosition(Position position){
