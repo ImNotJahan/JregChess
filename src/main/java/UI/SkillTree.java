@@ -23,7 +23,7 @@ public class SkillTree extends JFrame {
 
     private void init(){
         upgrades[0] = new UpgradeButton("suicide-bomber", Pawn.class.getSimpleName());
-        upgrades[1] = new UpgradeButton("centaur", Pawn.class.getSimpleName());
+        upgrades[1] = new UpgradeButton("centaur", Pawn.class.getSimpleName(), Knight.class.getSimpleName());
         upgrades[2] = new UpgradeButton("unicorn", Knight.class.getSimpleName());
         upgrades[3] = new UpgradeButton("trojan-horse", Knight.class.getSimpleName());
         upgrades[4] = new UpgradeButton("rook-knight", Knight.class.getSimpleName(), Rook.class.getSimpleName());

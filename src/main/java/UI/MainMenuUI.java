@@ -3,6 +3,7 @@ package main.java.UI;
 import main.java.Main;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -20,8 +21,8 @@ public class MainMenuUI extends JFrame {
     }
 
     private void init(){
-        JButton singleplayerButton = new JButton("Singleplayer");
-        JButton multiplayerButton = new JButton("Multiplayer");
+        JButton singleplayerButton = new JButton("          Offline          ");
+        JButton multiplayerButton = new JButton("          Online          ");
 
         singleplayerButton.addMouseListener(new MouseAdapter() {
             @Override
