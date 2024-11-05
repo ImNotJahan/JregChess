@@ -69,10 +69,13 @@ public class Icons {
             addNewIcon("angel7.png");
             addNewIcon("angel8.png");
 
+            addNewIcon("devil.png");
             addNewIcon("devil0.png");
             addNewIcon("devil1.png");
             addNewIcon("devil2.png");
             addNewIcon("devil3.png");
+
+            addNewIcon("hell.png");
 
             addNewIcon("atheism0.png");
             addNewIcon("atheism1.png");
