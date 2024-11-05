@@ -28,7 +28,7 @@ public class Board {
 
     // board makes sure no taking of our own pieces and on board
     public boolean movePiece(Position to, Position from, boolean wasClicked){
-        if(!validMove(to, from)) return false;
+        if(!validMove(to, from, wasClicked)) return false;
 
         Piece piece = getPieceAt(from);
 
@@ -52,7 +52,11 @@ public class Board {
         return movePiece(to, from, false);
     }
 
-    public boolean validMove(Position to, Position from) {
+    public boolean validMove(Position to, Position from){
+        return validMove(to, from, false);
+    }
+
+    public boolean validMove(Position to, Position from, boolean wasClicked) {
         if(from == null || to == null) return false;
 
         Piece piece = getPieceAt(from);
@@ -62,6 +66,19 @@ public class Board {
         if(pieceAt(to) && getPieceAt(to).getColor() == piece.getColor()) return false;
         if(!piece.validMoveP(to, this)) return false;
         if(to.equals(from)) return false;
+
+        // make sure that other parts of large piece don't make illegal move
+        if(wasClicked && piece instanceof LargePiece){
+            Position diff = ((LargePiece) piece).getDiff();
+            Position originTo = to.difference(diff);
+            Position originFrom = from.difference(diff);
+
+            for(int y = 0; y < ((LargePiece) piece).getHeight(); y++){
+                for(int x = 0; x < ((LargePiece) piece).getWidth(); x++){
+                    if(!validMove(originTo.add(x, y), originFrom.add(x, y))) return false;
+                }
+            }
+        }
 
         return true;
     }
@@ -79,7 +96,21 @@ public class Board {
 
         if(piece == null) return true;
 
+        if(piece instanceof LargePiece && ((LargePiece) piece).getId() != 0)
+            return takePiece(pos.difference(((LargePiece) piece).getDiff()), taker);
+
         if(!piece.kill(taker)) return false;
+
+        // if the leader piece, kill the related pieces
+        if(piece instanceof LargePiece && ((LargePiece) piece).getId() == 0) {
+            for(int y = 0; y < ((LargePiece) piece).getHeight(); y++) {
+                for (int x = 0; x < ((LargePiece) piece).getWidth(); x++) {
+                    if (x + y == 0) continue;
+                    removePiece(pos.add(x, y));
+                }
+            }
+        }
+
         removePiece(pos);
 
         return true;

@@ -34,6 +34,11 @@ public class SuperKing extends LargePiece {
 
     @Override
     public boolean validMoveP(Position to, Board board) {
+        Position diff = position.difference(to);
+
+        if(Math.abs(diff.getX()) > 2) return false;
+        if(Math.abs(diff.getY()) > 2) return false;
+
         return true;
     }
 }

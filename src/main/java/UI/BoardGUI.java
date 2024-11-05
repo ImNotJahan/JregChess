@@ -83,7 +83,7 @@ public class BoardGUI extends JFrame {
                     board[y][x].highlight(game.currentBoard == Board.BoardType.Normal && !boardObj.pieceAt(pos), game);
                 }
                 else {
-                    board[y][x].highlight(boardObj.validMove(pos, game.getLastClicked()), game);
+                    board[y][x].highlight(boardObj.validMove(pos, game.getLastClicked(), true), game);
                     board[y][x].setSelected(pos.equals(game.getLastClicked()));
                 }
             }

@@ -29,6 +29,18 @@ public abstract class LargePiece extends Piece {
         }
     }
 
+    public Position getDiff(){
+        return getDiff(getId());
+    }
+
+    public boolean isRelated(LargePiece piece){
+        for(Piece relatedPiece : relatedPieces){
+            if(relatedPiece == piece) return true;
+        }
+
+        return false;
+    }
+
     public Position getDiff(int id){
         return new Position(id % getWidth(), Math.floorDiv(id, getWidth()));
     }
