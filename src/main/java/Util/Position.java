@@ -58,6 +58,10 @@ public class Position {
         return new Position(getX() + x, getY() + y);
     }
 
+    public Position add(Position pos) {
+        return new Position(getX() + pos.getY(), getY() + pos.getY());
+    }
+
     public boolean equals(Position pos) {
         if(pos == null) return false;
         return x == pos.getX() && y == pos.getY();

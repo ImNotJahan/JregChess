@@ -29,10 +29,12 @@ public class King extends Piece {
     }
 
     @Override
-    public void kill() {
-        super.kill();
+    public boolean kill(Piece killer) {
+        super.kill(killer);
 
         if(Main.game.currentBoard == Board.BoardType.Hell)
             Main.game.gameWon();
+
+        return true;
     }
 }

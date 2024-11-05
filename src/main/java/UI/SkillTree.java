@@ -18,6 +18,7 @@ public class SkillTree extends JFrame {
 
         pack();
         setVisible(true);
+        setResizable(false);
     }
 
     private void init(){
@@ -27,13 +28,13 @@ public class SkillTree extends JFrame {
         upgrades[3] = new UpgradeButton("trojan-horse", Knight.class.getSimpleName());
         upgrades[4] = new UpgradeButton("rook-knight", Knight.class.getSimpleName(), Rook.class.getSimpleName());
         upgrades[5] = new UpgradeButton("bishop-knight", Bishop.class.getSimpleName(), Knight.class.getSimpleName());
-        upgrades[6] = new UpgradeButton("necromancer", Pawn.class.getSimpleName());
-        upgrades[7] = new UpgradeButton("super-bishop", Pawn.class.getSimpleName());
-        upgrades[8] = new UpgradeButton("super-king", Pawn.class.getSimpleName());
-        upgrades[9] = new UpgradeButton("ball-queen", Pawn.class.getSimpleName());
+        upgrades[6] = new UpgradeButton("necromancer", Bishop.class.getSimpleName());
+        upgrades[7] = new UpgradeButton("super-bishop", Bishop.class.getSimpleName());
+        upgrades[8] = new UpgradeButton("super-king", King.class.getSimpleName());
+        upgrades[9] = new UpgradeButton("ball-queen", Queen.class.getSimpleName());
         upgrades[10] = new UpgradeButton("knight-queen", Queen.class.getSimpleName(), Knight.class.getSimpleName());
         upgrades[11] = new UpgradeButton("angry-rook", Rook.class.getSimpleName());
-        upgrades[12] = new UpgradeButton("rook-tower", Pawn.class.getSimpleName());
+        upgrades[12] = new UpgradeButton("rook-tower", Rook.class.getSimpleName());
 
         for(UpgradeButton upgrade : upgrades) add(upgrade);
 

@@ -17,6 +17,7 @@ public class Shop extends JFrame {
 
         pack();
         setVisible(true);
+        setResizable(false);
     }
 
     private void init(){

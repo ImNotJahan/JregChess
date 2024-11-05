@@ -4,8 +4,6 @@ import main.java.Board.Board;
 import main.java.Main;
 import main.java.Pieces.Piece;
 import main.java.UI.BoardGUI;
-import main.java.UI.Shop;
-import main.java.UI.SkillTree;
 import main.java.Util.IDs;
 import main.java.Util.Position;
 
@@ -140,6 +138,7 @@ public class GameState {
         Board board = getCurrentBoard();
         Position pos = new Position(x, y);
 
+        if(currentBoard != Board.BoardType.Normal) return;
         if(funds() < itemBeingBoughtCost) return;
         if(board.pieceAt(pos)) return;
 

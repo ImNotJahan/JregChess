@@ -15,6 +15,7 @@ public class MainMenuUI extends JFrame {
         init();
 
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 

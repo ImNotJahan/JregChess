@@ -22,7 +22,8 @@ public class NPC extends Piece {
     }
 
     @Override
-    public void kill() {
+    public boolean kill(Piece killer) {
         // NPCs don't get to go to the afterlife.
+        return true;
     }
 }

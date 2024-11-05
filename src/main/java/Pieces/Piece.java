@@ -49,12 +49,15 @@ public abstract class Piece {
         this.color = color;
     }
 
-    public void kill(){
+    // If returns false, doesn't die
+    public boolean kill(Piece killer){
         if(position.getLocation() == Board.BoardType.Normal) {
             position.changeBoard(Board.BoardType.Hell);
             Main.game.hell.addPiece(getPosition(), this);
             Main.game.giveGold(1);
         }
+
+        return true;
     }
 
     public void handleMove(Position to, Position from, Board board){}

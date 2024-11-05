@@ -25,6 +25,7 @@ public class GeneralUI extends JFrame {
 
         pack();
         setVisible(true);
+        setResizable(false);
     }
 
     private void init(){

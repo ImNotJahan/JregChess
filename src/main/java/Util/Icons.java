@@ -53,6 +53,11 @@ public class Icons {
             addNewIcon("black/trojan-horse.png");
             addNewIcon("black/unicorn.png");
             addNewIcon("black/super-bishop.png");
+
+            addNewIcon("white/super-king0.png");
+            addNewIcon("white/super-king1.png");
+            addNewIcon("white/super-king2.png");
+            addNewIcon("white/super-king3.png");
         } catch(Exception e){
             System.out.println(e);
         }

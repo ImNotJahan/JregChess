@@ -1,5 +1,6 @@
 package main.java.Board;
 
+import main.java.Pieces.LargePiece;
 import main.java.Pieces.Piece;
 import main.java.Util.Position;
 
@@ -8,7 +9,11 @@ public class Board {
     private final Piece[][] pieces = new Piece[8][8];
 
     public boolean addPiece(Position at, Piece piece){
-        if(pieceAt(at)) return false;
+        if(pieceAt(at))
+            if(!takePiece(at, piece)) return false;
+
+        if(piece instanceof LargePiece && ((LargePiece) piece).getId() == 0)
+            ((LargePiece)  piece).spawnFullPiece();
 
         return setPieceAt(at, piece);
     }
@@ -17,9 +22,10 @@ public class Board {
     public boolean movePiece(Position to, Position from){
         if(!validMove(to, from)) return false;
 
-        takePiece(to);
-
         Piece piece = getPieceAt(from);
+
+        if(!takePiece(to, piece)) return true;
+
         setPieceAt(to, piece);
 
         piece.handleMove(to, from, this);
@@ -49,15 +55,17 @@ public class Board {
         pieces[pos.getY()][pos.getX()] = null;
     }
 
-    public void takePiece(Position pos){
-        if(!validLocation(pos)) return;
+    public boolean takePiece(Position pos, Piece taker){
+        if(!validLocation(pos)) return false;
 
         Piece piece = getPieceAt(pos);
 
-        if(piece == null) return;
+        if(piece == null) return true;
 
+        if(!piece.kill(taker)) return false;
         removePiece(pos);
-        piece.kill();
+
+        return true;
     }
 
     public boolean pieceAt(Position pos){

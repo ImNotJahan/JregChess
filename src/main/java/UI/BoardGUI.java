@@ -21,16 +21,20 @@ public class BoardGUI extends JFrame {
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(8, 8));
+        setResizable(false);
 
         this.game = game;
 
         initBoard();
 
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
 
         generalUI = new GeneralUI(game);
         generalUI.switchBoardButton.gui = this;
+
+        //new RulesUI(game);
     }
 
     private void initBoard(){
@@ -76,7 +80,7 @@ public class BoardGUI extends JFrame {
                     else
                         board[y][x].highlight(false, game);
                 } else if(game.isBuying()){
-                    board[y][x].highlight(!boardObj.pieceAt(pos), game);
+                    board[y][x].highlight(game.currentBoard == Board.BoardType.Normal && !boardObj.pieceAt(pos), game);
                 }
                 else {
                     board[y][x].highlight(boardObj.validMove(pos, game.getLastClicked()), game);

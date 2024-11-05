@@ -59,13 +59,13 @@ public class AngryRook extends Piece {
                 for(int i = 1; i < diff.getX(); i++){
                     Piece piece = board.getPieceAt(position.add(i, 0));
 
-                    if(piece != null) board.takePiece(position.add(i, 0));
+                    if(piece != null) board.takePiece(position.add(i, 0), this);
                 }
             } else {
                 for(int i = -1; i > diff.getX(); i--){
                     Piece piece = board.getPieceAt(position.add(i, 0));
 
-                    if(piece != null) board.takePiece(position.add(i, 0));
+                    if(piece != null) board.takePiece(position.add(i, 0), this);
                 }
             }
         } else {
@@ -73,13 +73,13 @@ public class AngryRook extends Piece {
                 for(int i = 1; i < diff.getY(); i++){
                     Piece piece = board.getPieceAt(position.add(0, i));
 
-                    if(piece != null) board.takePiece(position.add(0, i));
+                    if(piece != null) board.takePiece(position.add(0, i), this);
                 }
             } else {
                 for(int i = -1; i > diff.getY(); i--){
                     Piece piece = board.getPieceAt(position.add(0, i));
 
-                    if(piece != null) board.takePiece(position.add(0, i));
+                    if(piece != null) board.takePiece(position.add(0, i), this);
                 }
             }
         }
