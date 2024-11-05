@@ -1,7 +1,9 @@
 package main.java.Pieces.NPCs;
 
 import main.java.Board.Board;
+import main.java.Main;
 import main.java.Pieces.LargePiece;
+import main.java.Pieces.Piece;
 import main.java.Util.Position;
 
 public class Church extends LargePiece {
@@ -32,6 +34,14 @@ public class Church extends LargePiece {
 
     @Override
     public boolean validMoveP(Position to, Board board) {
+        return false;
+    }
+
+    @Override
+    public boolean kill(Piece killer) {
+        Main.game.getCurrentBoard().removePiece(killer.getPosition());
+        Main.game.normal.addPiece(position, killer);
+
         return false;
     }
 }

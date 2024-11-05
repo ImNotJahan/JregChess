@@ -12,10 +12,20 @@ public class Portal extends NPC {
         return Icons.icons.get("portal.png");
     }
 
+    // portals move pieces between heaven and hell
     @Override
     public boolean kill(Piece killer) {
         Main.game.getCurrentBoard().removePiece(killer.getPosition());
-        Main.game.normal.addPiece(position, killer);
+
+        switch(Main.game.currentBoard){
+            case Normal:
+            case Hell:
+                Main.game.heaven.addPiece(position, killer);
+                break;
+
+            case Heaven:
+                Main.game.hell.addPiece(position, killer);
+        }
 
         return false;
     }
