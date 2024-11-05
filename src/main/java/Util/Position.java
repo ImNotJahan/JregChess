@@ -59,7 +59,7 @@ public class Position {
     }
 
     public Position add(Position pos) {
-        return new Position(getX() + pos.getY(), getY() + pos.getY());
+        return add(pos.getX(), pos.getY());
     }
 
     public boolean equals(Position pos) {
