@@ -19,6 +19,7 @@ public class IDs {
             case "rook-knight" -> new RookKnight(Piece.Color.White);
             case "angry-rook" -> new AngryRook(Piece.Color.White);
             case "super-king" -> new SuperKing(0, Piece.Color.White);
+            case "necromancer" -> new Necromancer(Piece.Color.White);
             default -> new Placeholder();
         };
     }

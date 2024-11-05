@@ -7,6 +7,11 @@ import main.java.Util.Position;
 public class Board {
     public enum BoardType { Normal, Heaven, Hell };
     private final Piece[][] pieces = new Piece[8][8];
+    private BoardType type;
+
+    public Board(BoardType type){
+        this.type = type;
+    }
 
     public boolean addPiece(Position at, Piece piece){
         if(pieceAt(at))
@@ -23,6 +28,8 @@ public class Board {
             ((LargePiece) piece).spawnFullPiece();
         }
 
+        at.setLocation(type);
+
         return setPieceAt(at, piece);
     }
 
@@ -37,6 +44,7 @@ public class Board {
             return movePiece(to.difference(diff), from.difference(diff));
         }
 
+        Piece capturedPiece = getPieceAt(to);
         if(!takePiece(to, piece)) return true;
 
         setPieceAt(to, piece);
@@ -44,6 +52,8 @@ public class Board {
         piece.handleMove(to, from, this);
 
         removePiece(from);
+
+        piece.capturePiece(capturedPiece, to, from);
 
         return true;
     }

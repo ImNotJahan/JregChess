@@ -62,6 +62,18 @@ public class Position {
         return add(pos.getX(), pos.getY());
     }
 
+    public Position divide(Position pos){
+        return new Position(getX() / pos.getX(), getY() / pos.getY());
+    }
+
+    public Position absolute() {
+        return new Position(Math.abs(getX()), Math.abs(getY()));
+    }
+
+    public void setLocation(Board.BoardType location){
+        this.location = location;
+    }
+
     public boolean equals(Position pos) {
         if(pos == null) return false;
         return x == pos.getX() && y == pos.getY();

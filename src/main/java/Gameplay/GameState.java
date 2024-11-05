@@ -13,9 +13,9 @@ import java.util.ArrayList;
 public class GameState {
     public final ArrayList<Rule> rules = new ArrayList<>();
 
-    public final Board normal = new Board();
-    public final Board heaven = new Board();
-    public final Board hell = new Board();
+    public final Board normal = new Board(Board.BoardType.Normal);
+    public final Board heaven = new Board(Board.BoardType.Heaven);
+    public final Board hell = new Board(Board.BoardType.Hell);
 
     public int whiteGP = 5;
     public int blackGP = 5;
