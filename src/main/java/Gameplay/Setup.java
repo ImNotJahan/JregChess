@@ -2,10 +2,7 @@ package main.java.Gameplay;
 
 import main.java.Board.Board;
 import main.java.Pieces.*;
-import main.java.Pieces.NPCs.Angel;
-import main.java.Pieces.NPCs.Coin;
-import main.java.Pieces.NPCs.Devil;
-import main.java.Pieces.NPCs.Portal;
+import main.java.Pieces.NPCs.*;
 import main.java.Util.Position;
 
 public class Setup {
@@ -59,5 +56,7 @@ public class Setup {
         heaven.addPiece(new Position(0, 7), new Portal());
 
         heaven.addPiece(new Position(1, 1, Board.BoardType.Heaven), new Angel(0));
+        heaven.addPiece(new Position(5, 2, Board.BoardType.Heaven), new Atheism(0));
+        heaven.addPiece(new Position(6, 5, Board.BoardType.Heaven), new Church(0));
     }
 }

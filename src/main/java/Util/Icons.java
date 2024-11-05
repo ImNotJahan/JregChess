@@ -73,6 +73,18 @@ public class Icons {
             addNewIcon("devil1.png");
             addNewIcon("devil2.png");
             addNewIcon("devil3.png");
+
+            addNewIcon("atheism0.png");
+            addNewIcon("atheism1.png");
+            addNewIcon("atheism2.png");
+            addNewIcon("atheism3.png");
+
+            addNewIcon("church0.png");
+            addNewIcon("church1.png");
+            addNewIcon("church2.png");
+            addNewIcon("church3.png");
+            addNewIcon("church4.png");
+            addNewIcon("church5.png");
         } catch(Exception e){
             System.out.println(e);
         }

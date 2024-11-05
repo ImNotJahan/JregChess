@@ -20,6 +20,8 @@ public class TileComponent extends JButton {
     public void init(GameState game){
         setPreferredSize(new Dimension(64, 64));
 
+        setBorderPainted(false);
+
         refreshColor(game);
 
         setHorizontalAlignment(SwingConstants.CENTER);
