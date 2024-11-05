@@ -2,6 +2,7 @@ package main.java.Gameplay;
 
 import main.java.Board.Board;
 import main.java.Main;
+import main.java.Pieces.NPCs.Angel;
 import main.java.Pieces.Piece;
 import main.java.Pieces.Upgrades.SuperKing;
 import main.java.UI.BoardGUI;
@@ -33,17 +34,19 @@ public class GameState {
         Setup.setupHell(hell);
         Setup.setupHeaven(heaven);
 
-        normal.addPiece(new Position(3, 3), new SuperKing(0, Piece.Color.White));
-
         gui = new BoardGUI(this);
     }
 
-    public Board getCurrentBoard(){
-        return switch (currentBoard){
+    public Board getBoard(Board.BoardType boardType){
+        return switch (boardType){
             case Heaven -> heaven;
             case Hell -> hell;
             case Normal -> normal;
         };
+    }
+
+    public Board getCurrentBoard(){
+        return getBoard(currentBoard);
     }
 
     private Position lastClicked;

@@ -74,7 +74,7 @@ public abstract class LargePiece extends Piece {
                 LargePiece piece = spawnPiece(x + y * getWidth());
 
                 relatedPieces[y * getWidth() + x] = piece;
-                Main.game.getCurrentBoard().addPiece(position.add(x, y), piece);
+                Main.game.getBoard(position.getLocation()).addPiece(position.add(x, y), piece);
             }
         }
     }

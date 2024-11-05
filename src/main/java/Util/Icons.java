@@ -58,6 +58,16 @@ public class Icons {
             addNewIcon("white/super-king1.png");
             addNewIcon("white/super-king2.png");
             addNewIcon("white/super-king3.png");
+
+            addNewIcon("angel0.png");
+            addNewIcon("angel1.png");
+            addNewIcon("angel2.png");
+            addNewIcon("angel3.png");
+            addNewIcon("angel4.png");
+            addNewIcon("angel5.png");
+            addNewIcon("angel6.png");
+            addNewIcon("angel7.png");
+            addNewIcon("angel8.png");
         } catch(Exception e){
             System.out.println(e);
         }
