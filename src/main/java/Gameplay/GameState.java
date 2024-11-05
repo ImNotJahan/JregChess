@@ -3,6 +3,7 @@ package main.java.Gameplay;
 import main.java.Board.Board;
 import main.java.Main;
 import main.java.Pieces.Piece;
+import main.java.Pieces.Upgrades.SuperKing;
 import main.java.UI.BoardGUI;
 import main.java.Util.IDs;
 import main.java.Util.Position;
@@ -31,6 +32,8 @@ public class GameState {
         Setup.setupNormal(normal);
         Setup.setupHell(hell);
         Setup.setupHeaven(heaven);
+
+        normal.addPiece(new Position(3, 3), new SuperKing(0, Piece.Color.White));
 
         gui = new BoardGUI(this);
     }

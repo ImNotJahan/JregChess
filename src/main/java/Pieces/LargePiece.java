@@ -28,6 +28,10 @@ public abstract class LargePiece extends Piece {
         }
     }
 
+    public void setPosition(Position position){
+        this.position = position;
+    }
+
     public abstract int getWidth();
 
     public abstract int getHeight();

@@ -59,5 +59,6 @@ public class GeneralUI extends JFrame {
 
     public void redraw(){
         moneyLabel.update(game);
+        pack();
     }
 }

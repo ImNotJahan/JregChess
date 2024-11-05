@@ -12,8 +12,16 @@ public class Board {
         if(pieceAt(at))
             if(!takePiece(at, piece)) return false;
 
-        if(piece instanceof LargePiece && ((LargePiece) piece).getId() == 0)
-            ((LargePiece)  piece).spawnFullPiece();
+        if(piece instanceof LargePiece && ((LargePiece) piece).getId() == 0) {
+            // so the piece stays on the board
+            if(at.getY() == 9 - ((LargePiece) piece).getWidth())
+                at = at.add(0, -(((LargePiece) piece).getWidth() - 1));
+            if(at.getY() == 9 - ((LargePiece) piece).getHeight())
+                at = at.add(0, -(((LargePiece) piece).getHeight() - 1));
+
+            ((LargePiece) piece).setPosition(at);
+            ((LargePiece) piece).spawnFullPiece();
+        }
 
         return setPieceAt(at, piece);
     }
