@@ -48,8 +48,17 @@ public class GeneralUI extends JFrame {
             }
         });
 
+        JButton rulesButton = new JButton("Rules");
+        rulesButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new RulesUI(game);
+            }
+        });
+
         add(shopButton);
         add(skillTreeButton);
+        add(rulesButton);
 
         switchBoardButton = new SwitchBoardButton();
         add(switchBoardButton);

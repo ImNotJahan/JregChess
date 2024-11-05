@@ -2,16 +2,17 @@ package main.java.Gameplay;
 
 import main.java.Board.Board;
 import main.java.Main;
-import main.java.Pieces.NPCs.Angel;
 import main.java.Pieces.Piece;
-import main.java.Pieces.Upgrades.SuperKing;
 import main.java.UI.BoardGUI;
 import main.java.Util.IDs;
 import main.java.Util.Position;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class GameState {
+    public final ArrayList<Rule> rules = new ArrayList<>();
+
     public final Board normal = new Board();
     public final Board heaven = new Board();
     public final Board hell = new Board();
@@ -35,6 +36,9 @@ public class GameState {
         Setup.setupHeaven(heaven);
 
         gui = new BoardGUI(this);
+
+        rules.add(Rule.KING_DIES_IN_HELL);
+        rules.add(Rule.SUICIDE_BOMBER_HEAVEN);
     }
 
     public Board getBoard(Board.BoardType boardType){
