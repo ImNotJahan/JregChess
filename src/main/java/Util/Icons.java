@@ -68,6 +68,11 @@ public class Icons {
             addNewIcon("angel6.png");
             addNewIcon("angel7.png");
             addNewIcon("angel8.png");
+
+            addNewIcon("devil0.png");
+            addNewIcon("devil1.png");
+            addNewIcon("devil2.png");
+            addNewIcon("devil3.png");
         } catch(Exception e){
             System.out.println(e);
         }

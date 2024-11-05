@@ -19,7 +19,6 @@ public class TileComponent extends JButton {
 
     public void init(GameState game){
         setPreferredSize(new Dimension(64, 64));
-        setBorder(null);
 
         refreshColor(game);
 

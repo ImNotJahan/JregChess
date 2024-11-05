@@ -4,6 +4,7 @@ import main.java.Board.Board;
 import main.java.Pieces.*;
 import main.java.Pieces.NPCs.Angel;
 import main.java.Pieces.NPCs.Coin;
+import main.java.Pieces.NPCs.Devil;
 import main.java.Pieces.NPCs.Portal;
 import main.java.Util.Position;
 
@@ -48,6 +49,8 @@ public class Setup {
         hell.addPiece(new Position(7, 0), new Coin());
 
         hell.addPiece(new Position(2, 5), new Portal());
+
+        hell.addPiece(new Position(4, 2, Board.BoardType.Hell), new Devil(0));
     }
 
     public static void setupHeaven(Board heaven){
