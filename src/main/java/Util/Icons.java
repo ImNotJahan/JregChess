@@ -27,6 +27,8 @@ public class Icons {
             addNewIcon("coin.png");
             addNewIcon("portal.png");
             addNewIcon("placeholder.png");
+            addNewIcon("bomb.png");
+            addNewIcon("landmine.png");
 
             addNewIcon("white/angry-rook.png");
             addNewIcon("white/ball-queen.png");
@@ -42,6 +44,7 @@ public class Icons {
             addNewIcon("white/super-bishop.png");
             addNewIcon("white/zebra.png");
             addNewIcon("white/giraffe.png");
+            addNewIcon("white/jester.png");
 
             addNewIcon("black/angry-rook.png");
             addNewIcon("black/ball-queen.png");
@@ -57,6 +60,7 @@ public class Icons {
             addNewIcon("black/super-bishop.png");
             addNewIcon("black/zebra.png");
             addNewIcon("black/giraffe.png");
+            addNewIcon("black/jester.png");
 
             addNewIcon("white/super-king0.png");
             addNewIcon("white/super-king1.png");

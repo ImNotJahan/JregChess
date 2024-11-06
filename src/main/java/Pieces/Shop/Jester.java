@@ -1,16 +1,23 @@
-package main.java.Pieces.Upgrades;
+package main.java.Pieces.Shop;
 
 import main.java.Board.Board;
 import main.java.Main;
-import main.java.Pieces.Pawn;
+import main.java.Pieces.Bishop;
 import main.java.Pieces.Piece;
 import main.java.Util.Icons;
+import main.java.Util.Position;
 
 import javax.swing.*;
 
-public class SuicideBomber extends Pawn {
-    public SuicideBomber(Color color) {
+public class Jester extends Bishop {
+    public Jester(Color color) {
         super(color);
+    }
+
+    @Override
+    public Icon getIcon() {
+        if(getColor() == Color.White) return Icons.icons.get("white/jester.png");
+        return Icons.icons.get("black/jester.png");
     }
 
     @Override
@@ -32,11 +39,5 @@ public class SuicideBomber extends Pawn {
         }
 
         return true;
-    }
-
-    @Override
-    public Icon getIcon() {
-        if(getColor() == Color.White) return Icons.icons.get("white/suicide-bomber.png");
-        return Icons.icons.get("black/suicide-bomber.png");
     }
 }

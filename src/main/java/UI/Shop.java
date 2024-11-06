@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Shop extends JFrame {
-    private final BuyButton[] products = new BuyButton[11];
+    private final BuyButton[] products = new BuyButton[14];
 
     public Shop(){
         setTitle("Shop");
@@ -32,6 +32,9 @@ public class Shop extends JFrame {
         products[8] = new BuyButton("bishop-knight", 6);
         products[9] = new BuyButton("knight-queen", 15);
         products[10] = new BuyButton("giraffe", 6);
+        products[11] = new BuyButton("landmine", 4, true);
+        products[12] = new BuyButton("bomb", 15, true);
+        products[13] = new BuyButton("jester", 8);
 
         for(BuyButton product : products) add(product);
     }

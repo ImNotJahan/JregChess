@@ -9,7 +9,13 @@ import java.awt.event.MouseEvent;
 
 public class BuyButton extends JButton {
     public BuyButton(String id, int cost){
-        setIcon(Icons.icons.get("white/" + id + ".png"));
+        this(id, cost, false);
+    }
+
+    public BuyButton(String id, int cost, boolean NPC){
+        if(NPC) setIcon(Icons.icons.get(id + ".png"));
+        else setIcon(Icons.icons.get("white/" + id + ".png"));
+
         setText(cost + "GP");
 
         addMouseListener(new MouseAdapter() {
