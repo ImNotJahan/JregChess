@@ -1,7 +1,9 @@
 package main.java.Pieces.Upgrades;
 
 import main.java.Board.Board;
+import main.java.Main;
 import main.java.Pieces.LargePiece;
+import main.java.Pieces.Piece;
 import main.java.UI.Healthbar;
 import main.java.Util.Position;
 
@@ -46,6 +48,17 @@ public class SuperKing extends LargePiece {
         if(Math.abs(diff.getY()) > 2) return false;
 
         return true;
+    }
+
+    @Override
+    public boolean kill(Piece killer) {
+        if(id == 0)
+            if(position.getLocation() == Board.BoardType.Hell ||
+                    (position.getLocation() == Board.BoardType.Normal &&
+                            Main.game.hell == null))
+                Main.game.gameWon(getColor());
+
+        return super.kill(killer);
     }
 
     @Override

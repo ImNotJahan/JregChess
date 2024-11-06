@@ -118,8 +118,8 @@ public class GameState {
         return false;
     }
 
-    public void gameWon(){
-        if(whiteToMove)
+    public void gameWon(Piece.Color loosingColor){
+        if(loosingColor == Piece.Color.Black)
             JOptionPane.showMessageDialog(gui, "White wins!");
         else
             JOptionPane.showMessageDialog(gui, "Black wins!");

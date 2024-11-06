@@ -27,4 +27,14 @@ public class King extends Piece {
         if(getColor() == Color.White) return Icons.icons.get("white/king.png");
         return Icons.icons.get("black/king.png");
     }
+
+    @Override
+    public boolean kill(Piece killer) {
+        if(position.getLocation() == Board.BoardType.Hell ||
+                (position.getLocation() == Board.BoardType.Normal &&
+                        Main.game.hell == null))
+            Main.game.gameWon(getColor());
+
+        return super.kill(killer);
+    }
 }
