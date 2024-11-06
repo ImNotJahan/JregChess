@@ -2,6 +2,7 @@ package main.java.Util;
 
 import main.java.Pieces.NPCs.Placeholder;
 import main.java.Pieces.*;
+import main.java.Pieces.Shop.Zebra;
 import main.java.Pieces.Upgrades.*;
 
 public class IDs {
@@ -26,6 +27,7 @@ public class IDs {
             case "unicorn" -> new Unicorn(Piece.Color.White);
             case "trojan-horse" -> new TrojanHorse(Piece.Color.White);
             case "rook-tower" -> new RookTower(Piece.Color.White);
+            case "zebra" -> new Zebra(Piece.Color.White);
             default -> new Placeholder();
         };
     }
