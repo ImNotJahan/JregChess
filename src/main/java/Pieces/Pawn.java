@@ -41,10 +41,13 @@ public class Pawn extends Piece {
             if(diff.getY() > 2) return false;
             if(diff.getY() <= 0) return false;
             if(diff.getY() == 2 && moved) return false;
-            if(getColor() == Color.White)
-                if(diff.getY() == 2 && board.pieceAt(to.add(0, -1))) return false;
-            else
-                if(diff.getY() == 2 && board.pieceAt(to.add(0, 1))) return false;
+            if(diff.getY() == 2) {
+                if (getColor() == Color.White) {
+                    return !board.pieceAt(to.add(0, 1));
+                } else {
+                    return !board.pieceAt(to.add(0, -1));
+                }
+            }
         } else {
             if(diff.getY() != 1) return false;
             if(diff.getX() != 1 && diff.getX() != -1) return false;
