@@ -41,7 +41,7 @@ public class RulesUI extends JFrame {
         pack();
     }
 
-    private static String ruleToString(Rule rule){
+    public static String ruleToString(Rule rule){
         return switch (rule){
             case CENTAUR_MAKING -> "You can move pawns onto horses to make centaurs";
             case KING_DIES_IN_HELL -> "King must die in hell";
@@ -49,17 +49,25 @@ public class RulesUI extends JFrame {
             case NEXT_PIECE_EXPLODES -> "NEXT PIECE TAKEN EXPLODES";
             case PAWNS_MOVE_FOUR -> "PAWNS CAN MOVE UP TO FOUR SPACES ON THEIR FIRST TURN";
             case BISHOPS_GAIN_NECROMANCY -> "BISHOPS GAIN NECROMANCY";
-            case ZOMBIE_APOCALYPSE -> "";
-            case GUN -> "";
-            case WILD_LIFE -> "";
-            case WILD_HORSE -> "";
-            case TREADMILL_BOARD -> "";
-            case MEGA_CASTLE -> "";
-            case WHIRLPOOL -> "";
-            case LANDMINES -> "";
-            case VOID -> "";
-            case PITTRAPS -> "";
-
+            case ZOMBIE_APOCALYPSE -> "ZOMBIE APOCALYPSE";
+            case GUN -> "GUN SPAWNS";
+            case WILD_LIFE -> "SPAWN WILD LIFE";
+            case WILD_HORSE -> "SPAWN WILD HORSE";
+            case TREADMILL_BOARD -> "TREADMILL BOARD";
+            case MEGA_CASTLE -> "KINGS CAN CASTLE WITH ANY PIECE";
+            case WHIRLPOOL -> "WHIRLPOOLS APPEAR";
+            case LANDMINES -> "LANDMINES SPAWN";
+            case VOID -> "VOIDVOIDVOIDVOID";
+            case PITTRAPS -> "PITTRAPS SPAWN";
+            case EVERYONE_UPGRADES -> "EVERYONE UPGRADES A PIECE";
+            case GOLD_RUSH -> "GOLD RUSH";
+            case METEOR_SHOWER -> "METEOR SHOWER";
+            case UNICORNS -> "KNIGHTS BECOME UNICORNS";
+            case PORTALS_OPEN -> "PORTALS APPEAR";
+            case PAWN_UPGRADE -> "PAWNS UPGRADE";
+            case MORE_GOLD -> "EVERYONE GETS GOLD";
+            case TREASURE -> "TREASURE APPEARS";
+            case POTIONS -> "POTION SELLER ARRIVES";
             default -> "Unknown rule";
         };
     }

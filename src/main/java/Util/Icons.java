@@ -29,6 +29,16 @@ public class Icons {
             addNewIcon("placeholder.png");
             addNewIcon("bomb.png");
             addNewIcon("landmine.png");
+            addNewIcon("gun.png");
+            addNewIcon("meteor.png");
+            addNewIcon("pittrap.png");
+            addNewIcon("potion-seller.png");
+            addNewIcon("treasure.png");
+            addNewIcon("void.png");
+            addNewIcon("upgrade-icon.png");
+            addNewIcon("whirlpool.png");
+            addNewIcon("wildlife.png");
+            addNewIcon("zombie.png");
 
             addNewIcon("white/angry-rook.png");
             addNewIcon("white/ball-queen.png");

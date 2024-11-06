@@ -17,4 +17,13 @@ public enum Rule {
     LANDMINES,
     VOID,
     PITTRAPS,
+    EVERYONE_UPGRADES,
+    GOLD_RUSH,
+    METEOR_SHOWER,
+    UNICORNS,
+    PORTALS_OPEN,
+    PAWN_UPGRADE,
+    MORE_GOLD,
+    TREASURE,
+    POTIONS,
 }
