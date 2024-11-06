@@ -20,11 +20,12 @@ public class Portal extends NPC {
         switch(Main.game.currentBoard){
             case Normal:
             case Hell:
-                Main.game.heaven.addPiece(position, killer);
+                if(Main.game.heaven != null) Main.game.heaven.addPiece(position, killer);
                 break;
 
             case Heaven:
-                Main.game.hell.addPiece(position, killer);
+                if(Main.game.hell != null) Main.game.hell.addPiece(position, killer);
+                break;
         }
 
         return false;

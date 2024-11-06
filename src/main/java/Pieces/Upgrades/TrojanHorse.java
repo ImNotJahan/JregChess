@@ -44,7 +44,7 @@ public class TrojanHorse extends Piece {
             if(spawnedPawns == 3) break;
         }
 
-        return true;
+        return super.kill(killer);
     }
 
     @Override

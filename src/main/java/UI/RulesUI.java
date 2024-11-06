@@ -3,6 +3,7 @@ package main.java.UI;
 import main.java.Gameplay.GameState;
 import main.java.Gameplay.Rule;
 import main.java.Main;
+import main.java.UI.Popups.NewRule;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

@@ -25,8 +25,10 @@ public class Jester extends Bishop {
         Main.game.giveGold(1);
 
         if(position.getLocation() == Board.BoardType.Normal) {
-            position.changeBoard(Board.BoardType.Heaven);
-            Main.game.heaven.addPiece(getPosition(), this);
+            if(Main.game.heaven != null) {
+                position.changeBoard(Board.BoardType.Heaven);
+                Main.game.heaven.addPiece(getPosition(), this);
+            }
         }
 
         // blow up pieces in 1-tile radius around piece

@@ -4,6 +4,7 @@ import main.java.Board.Board;
 import main.java.Main;
 import main.java.Pieces.Piece;
 import main.java.UI.BoardGUI;
+import main.java.UI.Popups.NewRule;
 import main.java.Util.IDs;
 import main.java.Util.Position;
 
@@ -14,8 +15,8 @@ public class GameState {
     public final ArrayList<Rule> rules = new ArrayList<>();
 
     public final Board normal = new Board(Board.BoardType.Normal);
-    public final Board heaven = new Board(Board.BoardType.Heaven);
-    public final Board hell = new Board(Board.BoardType.Hell);
+    public Board heaven = new Board(Board.BoardType.Heaven);
+    public Board hell = new Board(Board.BoardType.Hell);
 
     public int whiteGP = 5;
     public int blackGP = 5;
@@ -24,8 +25,15 @@ public class GameState {
 
     public Board.BoardType currentBoard = Board.BoardType.Normal;
 
+    private int turnsSinceNewRule = 0;
+    
     public GameState(){
         init();
+    }
+
+    public void addRule(Rule rule){
+        rules.add(rule);
+        action = Action.Nothing;
     }
 
     private void init() {
@@ -68,13 +76,21 @@ public class GameState {
     private String[] upgradingFrom;
     private String upgradingTo;
 
-    private enum Action { Nothing, Moving, Buying, Upgrading };
+    private enum Action { Nothing, Moving, Buying, Upgrading, HandlingPopup };
     private Action action = Action.Nothing;
 
     public void nowUpgrading(String[] from, String to){
         upgradingFrom = from;
         upgradingTo = to;
         action = Action.Upgrading;
+    }
+
+    public void nowHandlingPopup(){
+        action = Action.HandlingPopup;
+    }
+
+    public void clearAction(){
+        action = Action.Nothing;
     }
 
     private int itemBeingBoughtCost;
@@ -170,7 +186,24 @@ public class GameState {
         else blackGP += amount;
     }
 
+    public void nextTurn(){
+        whiteToMove = !whiteToMove;
+        turnsSinceNewRule++;
+        
+        checkIfNewRule();
+    }
+    
+    private void checkIfNewRule(){
+        if(turnsSinceNewRule < rules.size() * 2) return;
+
+        new NewRule();
+        action = Action.HandlingPopup;
+        turnsSinceNewRule = 0;
+    }
+    
     public void handleClick(int x, int y){
+        if(action == Action.HandlingPopup) return;
+
         if(action == Action.Upgrading) {
             handleUpgrading(x, y);
             return;
@@ -183,9 +216,11 @@ public class GameState {
         Position pos = new Position(x, y);
 
         if(action == Action.Moving){
-            if(board.movePiece(pos, lastClicked, true))
-                whiteToMove = !whiteToMove;
             action = Action.Nothing;
+
+            if(board.movePiece(pos, lastClicked, true))
+                nextTurn();
+
             lastClicked = null;
         } else {
             if(board.pieceAt(pos)){

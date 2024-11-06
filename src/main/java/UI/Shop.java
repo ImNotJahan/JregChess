@@ -11,7 +11,7 @@ public class Shop extends JFrame {
     public Shop(){
         setTitle("Shop");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(4, 4));
+        setLayout(new GridLayout(6, 3));
 
         init();
 
@@ -37,10 +37,8 @@ public class Shop extends JFrame {
         products[13] = new BuyButton("jester", 8);
         products[14] = new BuyButton("angry-rook", 9);
         products[15] = new BuyButton("unicorn", 6);
-        products[16] = new BuyButton("portal", 4);
+        products[16] = new BuyButton("portal", 4, true);
 
         for(BuyButton product : products) add(product);
     }
-
-
 }

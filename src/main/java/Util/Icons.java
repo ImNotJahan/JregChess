@@ -85,6 +85,7 @@ public class Icons {
 
             addNewIcon("hell.png");
 
+            addNewIcon("atheism.png");
             addNewIcon("atheism0.png");
             addNewIcon("atheism1.png");
             addNewIcon("atheism2.png");

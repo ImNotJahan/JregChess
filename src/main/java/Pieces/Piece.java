@@ -58,8 +58,11 @@ public abstract class Piece {
         }
 
         if(position.getLocation() == Board.BoardType.Normal) {
-            position.changeBoard(Board.BoardType.Hell);
-            Main.game.hell.addPiece(getPosition(), this);
+            if(Main.game.hell != null) {
+                position.changeBoard(Board.BoardType.Hell);
+                Main.game.hell.addPiece(getPosition(), this);
+            }
+
             Main.game.giveGold(1);
         }
 

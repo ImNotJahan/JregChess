@@ -40,6 +40,7 @@ public class Devil extends LargePiece {
 
     @Override
     public boolean kill(Piece killer) {
+        Main.game.nowHandlingPopup();
         new DevilPopup(Main.game);
         
         return false;
