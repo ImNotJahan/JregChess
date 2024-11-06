@@ -33,6 +33,7 @@ public class IDs {
             case "landmine" -> new Landmine();
             case "bomb" -> new Bomb();
             case "jester" -> new Jester(Piece.Color.White);
+            case "portal" -> new Portal();
             default -> new Placeholder();
         };
     }
