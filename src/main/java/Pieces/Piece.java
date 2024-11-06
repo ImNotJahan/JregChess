@@ -51,6 +51,12 @@ public abstract class Piece {
 
     // If returns false, doesn't die
     public boolean kill(Piece killer){
+        hurt();
+
+        if(getHealth() > 0){
+            return false;
+        }
+
         if(position.getLocation() == Board.BoardType.Normal) {
             position.changeBoard(Board.BoardType.Hell);
             Main.game.hell.addPiece(getPosition(), this);
@@ -58,6 +64,12 @@ public abstract class Piece {
         }
 
         return true;
+    }
+
+    public void hurt() {}
+
+    public int getHealth(){
+        return 0;
     }
 
     public void handleMove(Position to, Position from, Board board){}
