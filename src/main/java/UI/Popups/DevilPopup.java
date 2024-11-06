@@ -42,9 +42,9 @@ public class DevilPopup extends JFrame {
         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 
         JButton releaseButton = new JButton("RELEASE ME");
-        JButton removeRulesButton = new JButton("REMOVE ANY 2 RULES");
-        JButton destroyGridButton = new JButton("DESTROY A ROW OR COLUMN");
-        JButton getGoldButton = new JButton("YOU GET 20 GOLD. YOUR OPPONENT GETS 10");
+        JButton removeRulesButton = new JButton("REMOVE ANY RULE");
+        JButton destroyGridButton = new JButton("SMITE ANY PIECE");
+        JButton getGoldButton = new JButton("YOU GET 10 GOLD. YOUR OPPONENT GETS 5");
 
         releaseButton.addMouseListener(closeThis);
         removeRulesButton.addMouseListener(closeThis);
@@ -54,7 +54,13 @@ public class DevilPopup extends JFrame {
         getGoldButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Main.game.giveGold(20);
+                if(Main.game.isWhiteToMove()){
+                    Main.game.whiteGP += 10;
+                    Main.game.blackGP += 5;
+                } else {
+                    Main.game.whiteGP += 5;
+                    Main.game.blackGP += 10;
+                }
             }
         });
 
