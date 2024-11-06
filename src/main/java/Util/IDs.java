@@ -24,6 +24,7 @@ public class IDs {
             case "ball-queen" -> new BallQueen(Piece.Color.White);
             case "centaur" -> new Centaur(Piece.Color.White);
             case "unicorn" -> new Unicorn(Piece.Color.White);
+            case "trojan-horse" -> new TrojanHorse(Piece.Color.White);
             default -> new Placeholder();
         };
     }

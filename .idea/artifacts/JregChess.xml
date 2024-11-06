@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="jpackage" name="JregChess">
+    <output-path>$PROJECT_DIR$/out/artifacts/JregChess</output-path>
+    <properties id="jpackage-properties">
+      <options>
+        <option name="version" value="" />
+        <option name="copyright" value="" />
+        <option name="description" value="" />
+        <option name="vendor" value="" />
+        <option name="mainClass" value="main.java.Main" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="JregChess.jar">
+        <element id="module-output" name="JregChess" />
+      </element>
+    </root>
+  </artifact>
+</component>
