@@ -2,6 +2,7 @@ package main.java.UI.Components;
 
 import main.java.Gameplay.Rule;
 import main.java.Main;
+import main.java.UI.Popups.NewRule;
 import main.java.UI.RulesUI;
 import main.java.Util.Icons;
 
@@ -13,11 +14,13 @@ public class RuleButton extends JButton {
     public RuleButton(Rule rule){
         setIcon(Icons.icons.get(getIcon(rule) + ".png"));
 
+        RuleButton button = this;
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Main.game.addRule(rule);
-                System.out.println(RulesUI.ruleToString(rule));
+                NewRule.rules.remove(button);
             }
         });
     }

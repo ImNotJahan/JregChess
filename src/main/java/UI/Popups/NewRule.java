@@ -8,9 +8,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class NewRule extends JFrame {
-    private final RuleButton[] rules = new RuleButton[21];
+    public static final ArrayList<RuleButton> rules = new ArrayList<>();
     private final MouseListener closeThis;
 
     public NewRule(){
@@ -34,27 +35,29 @@ public class NewRule extends JFrame {
     }
 
     private void init(){
-        rules[0] = new RuleButton(Rule.EVERYONE_UPGRADES);
-        rules[1] = new RuleButton(Rule.PAWNS_MOVE_FOUR);
-        rules[2] = new RuleButton(Rule.BISHOPS_GAIN_NECROMANCY);
-        rules[3] = new RuleButton(Rule.GOLD_RUSH);
-        rules[4] = new RuleButton(Rule.METEOR_SHOWER);
-        rules[5] = new RuleButton(Rule.ZOMBIE_APOCALYPSE);
-        rules[6] = new RuleButton(Rule.WILD_LIFE);
-        rules[7] = new RuleButton(Rule.GUN);
-        rules[8] = new RuleButton(Rule.WILD_HORSE);
-        rules[9] = new RuleButton(Rule.NEXT_PIECE_EXPLODES);
-        rules[10] = new RuleButton(Rule.UNICORNS);
-        rules[11] = new RuleButton(Rule.PORTALS_OPEN);
-        rules[12] = new RuleButton(Rule.PAWN_UPGRADE);
-        rules[13] = new RuleButton(Rule.MEGA_CASTLE);
-        rules[14] = new RuleButton(Rule.WHIRLPOOL);
-        rules[15] = new RuleButton(Rule.LANDMINES);
-        rules[16] = new RuleButton(Rule.MORE_GOLD);
-        rules[17] = new RuleButton(Rule.VOID);
-        rules[18] = new RuleButton(Rule.PITTRAPS);
-        rules[19] = new RuleButton(Rule.TREASURE);
-        rules[20] = new RuleButton(Rule.POTIONS);
+        if(rules.isEmpty()) {
+            rules.add(new RuleButton(Rule.EVERYONE_UPGRADES));
+            rules.add(new RuleButton(Rule.PAWNS_MOVE_FOUR));
+            rules.add(new RuleButton(Rule.BISHOPS_GAIN_NECROMANCY));
+            rules.add(new RuleButton(Rule.GOLD_RUSH));
+            rules.add(new RuleButton(Rule.METEOR_SHOWER));
+            rules.add(new RuleButton(Rule.ZOMBIE_APOCALYPSE));
+            rules.add(new RuleButton(Rule.WILD_LIFE));
+            rules.add(new RuleButton(Rule.GUN));
+            rules.add(new RuleButton(Rule.WILD_HORSE));
+            rules.add(new RuleButton(Rule.NEXT_PIECE_EXPLODES));
+            rules.add(new RuleButton(Rule.UNICORNS));
+            rules.add(new RuleButton(Rule.PORTALS_OPEN));
+            rules.add(new RuleButton(Rule.PAWN_UPGRADE));
+            rules.add(new RuleButton(Rule.MEGA_CASTLE));
+            rules.add(new RuleButton(Rule.WHIRLPOOL));
+            rules.add(new RuleButton(Rule.LANDMINES));
+            rules.add(new RuleButton(Rule.MORE_GOLD));
+            rules.add(new RuleButton(Rule.VOID));
+            rules.add(new RuleButton(Rule.PITTRAPS));
+            rules.add(new RuleButton(Rule.TREASURE));
+            rules.add(new RuleButton(Rule.POTIONS));
+        }
 
         for(RuleButton rule : rules) {
             rule.addMouseListener(closeThis);
