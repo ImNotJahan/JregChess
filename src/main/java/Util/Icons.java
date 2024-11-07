@@ -40,6 +40,7 @@ public class Icons {
             addNewIcon("wildlife.png");
             addNewIcon("zombie.png");
             addNewIcon("wild-horse.png");
+            addNewIcon("explosion.png");
 
             addNewIcon("white/angry-rook.png");
             addNewIcon("white/ball-queen.png");

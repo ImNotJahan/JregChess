@@ -4,7 +4,10 @@ import main.java.Gameplay.Rule;
 import main.java.Main;
 import main.java.Pieces.LargePiece;
 import main.java.Pieces.Piece;
+import main.java.Util.Icons;
 import main.java.Util.Position;
+
+import javax.swing.*;
 
 public class Board {
     public enum BoardType { Normal, Heaven, Hell };
@@ -60,8 +63,14 @@ public class Board {
         return true;
     }
 
+    private boolean exploding = false;
     public void explode(Position position, Piece taker) {
         removePiece(position);
+
+        if(exploding) return;
+        exploding = true; // to stop infinitely exploding chains
+
+        JOptionPane.showMessageDialog(Main.game.gui, Icons.icons.get("explosion.png"));
 
         for(int x = -1; x <= 1; x++){
             for(int y = -1; y <= 1; y++) {
@@ -70,6 +79,8 @@ public class Board {
                 takePiece(position.add(x, y), taker);
             }
         }
+
+        exploding = false;
     }
 
     public boolean movePiece(Position to, Position from){
