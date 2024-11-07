@@ -17,7 +17,7 @@ public class NewRule extends JFrame {
     public NewRule(){
         setTitle("Pick a rule");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        setLayout(new GridLayout(5, 5));
+        setLayout(new GridLayout(6, 3));
 
         closeThis = new MouseAdapter() {
             @Override
@@ -56,7 +56,7 @@ public class NewRule extends JFrame {
             rules.add(new RuleButton(Rule.VOID));
             rules.add(new RuleButton(Rule.PITTRAPS));
             rules.add(new RuleButton(Rule.TREASURE));
-            rules.add(new RuleButton(Rule.POTIONS));
+            //rules.add(new RuleButton(Rule.POTIONS));
         }
 
         for(RuleButton rule : rules) {
