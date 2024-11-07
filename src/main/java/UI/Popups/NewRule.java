@@ -43,13 +43,13 @@ public class NewRule extends JFrame {
             rules.add(new RuleButton(Rule.METEOR_SHOWER));
             rules.add(new RuleButton(Rule.ZOMBIE_APOCALYPSE));
             rules.add(new RuleButton(Rule.WILD_LIFE));
-            rules.add(new RuleButton(Rule.GUN));
+            //rules.add(new RuleButton(Rule.GUN));
             rules.add(new RuleButton(Rule.WILD_HORSE));
             rules.add(new RuleButton(Rule.NEXT_PIECE_EXPLODES));
             rules.add(new RuleButton(Rule.UNICORNS));
             rules.add(new RuleButton(Rule.PORTALS_OPEN));
             rules.add(new RuleButton(Rule.PAWN_UPGRADE));
-            rules.add(new RuleButton(Rule.MEGA_CASTLE));
+            //rules.add(new RuleButton(Rule.MEGA_CASTLE));
             rules.add(new RuleButton(Rule.WHIRLPOOL));
             rules.add(new RuleButton(Rule.LANDMINES));
             rules.add(new RuleButton(Rule.MORE_GOLD));
