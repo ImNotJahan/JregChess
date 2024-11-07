@@ -6,10 +6,7 @@ import main.java.Pieces.Knight;
 import main.java.Pieces.NPCs.Coin;
 import main.java.Pieces.NPCs.NPC;
 import main.java.Pieces.NPCs.Portal;
-import main.java.Pieces.NPCs.Rules.Treasure;
-import main.java.Pieces.NPCs.Rules.WildHorse;
-import main.java.Pieces.NPCs.Rules.Wildlife;
-import main.java.Pieces.NPCs.Rules.Zombie;
+import main.java.Pieces.NPCs.Rules.*;
 import main.java.Pieces.NPCs.Shop.Landmine;
 import main.java.Pieces.NPCs.Shop.Pittrap;
 import main.java.Pieces.NPCs.Shop.Void;
@@ -223,6 +220,15 @@ public class RulesAndEvents {
 
             case VOID:
                 game.normal.addPiece(new Position(3, 3), new Void(0));
+                game.gui.redraw();
+                break;
+
+            case METEOR_SHOWER:
+                Meteor meteor = new Meteor();
+
+                game.normal.addPiece(new Position(0, 2), meteor);
+                game.automovingPieces.add(meteor);
+
                 game.gui.redraw();
                 break;
         }
