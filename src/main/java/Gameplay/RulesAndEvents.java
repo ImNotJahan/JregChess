@@ -12,6 +12,7 @@ import main.java.Pieces.NPCs.Rules.Wildlife;
 import main.java.Pieces.NPCs.Rules.Zombie;
 import main.java.Pieces.NPCs.Shop.Landmine;
 import main.java.Pieces.NPCs.Shop.Pittrap;
+import main.java.Pieces.NPCs.Shop.Void;
 import main.java.Pieces.NPCs.Shop.Whirlpool;
 import main.java.Pieces.Pawn;
 import main.java.Pieces.Piece;
@@ -217,6 +218,11 @@ public class RulesAndEvents {
 
             case WHIRLPOOL:
                 game.normal.addPiece(new Position(3 + randInt(0, 1), 3 + randInt(0, 1)), new Whirlpool());
+                game.gui.redraw();
+                break;
+
+            case VOID:
+                game.normal.addPiece(new Position(3, 3), new Void(0));
                 game.gui.redraw();
                 break;
         }

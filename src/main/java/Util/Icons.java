@@ -108,6 +108,11 @@ public class Icons {
             addNewIcon("church3.png");
             addNewIcon("church4.png");
             addNewIcon("church5.png");
+
+            addNewIcon("void0.png");
+            addNewIcon("void1.png");
+            addNewIcon("void2.png");
+            addNewIcon("void3.png");
         } catch(Exception e){
             System.out.println(e);
         }
