@@ -1,5 +1,6 @@
 package main.java.Pieces;
 
+import main.java.Gameplay.Rule;
 import main.java.Main;
 import main.java.Util.Icons;
 import main.java.Util.Position;
@@ -36,16 +37,24 @@ public class Pawn extends Piece {
 
         if(getColor() == Color.Black) diff.flipY();
 
-        if(!board.pieceAt(to) || board.getPieceAt(to).getColor() == Color.NPC){
+        int maxDistOnFirst = Main.game.rules.contains(Rule.PAWNS_MOVE_FOUR) ? 4 : 2;
+
+        if(!board.pieceAt(to)){
             if(diff.getX() != 0) return false;
-            if(diff.getY() > 2) return false;
+            if(diff.getY() > maxDistOnFirst) return false;
             if(diff.getY() <= 0) return false;
-            if(diff.getY() == 2 && moved) return false;
-            if(diff.getY() == 2) {
+            if(diff.getY() > 1 && moved) return false;
+            if(diff.getY() > 1) {
                 if (getColor() == Color.White) {
-                    return !board.pieceAt(to.add(0, 1));
+                    for(int i = 1; i < diff.getY(); i++){
+                        if(board.pieceAt(to.add(0, i)))
+                            return false;
+                    }
                 } else {
-                    return !board.pieceAt(to.add(0, -1));
+                    for(int i = 1; i < diff.getY(); i++){
+                        if(board.pieceAt(to.add(0, -i)))
+                            return false;
+                    }
                 }
             }
         } else {
