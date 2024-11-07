@@ -13,10 +13,8 @@ import main.java.Pieces.NPCs.Rules.Zombie;
 import main.java.Pieces.NPCs.Shop.Landmine;
 import main.java.Pieces.Pawn;
 import main.java.Pieces.Piece;
-import main.java.Pieces.Upgrades.Centaur;
-import main.java.Pieces.Upgrades.Necromancer;
-import main.java.Pieces.Upgrades.SuicideBomber;
-import main.java.Pieces.Upgrades.Unicorn;
+import main.java.Pieces.Shop.Jester;
+import main.java.Pieces.Upgrades.*;
 import main.java.Util.Position;
 
 public class RulesAndEvents {
@@ -175,6 +173,31 @@ public class RulesAndEvents {
 
                 game.automovingPieces.add(zombie);
                 game.normal.addPiece(new Position(7, 4), zombie);
+                game.gui.redraw();
+                break;
+
+            case EVERYONE_UPGRADES:
+                for(int i = 0; i < 8; i++){
+                    Position pos = new Position(randInt(0, 7), randInt(0, 7));
+                    Piece piece = game.normal.getPieceAt(pos);
+
+                    if(piece != null) {
+                        Piece.Color color = piece.getColor();
+
+                        if(color == Piece.Color.NPC) continue;
+
+                        game.normal.setPieceAt(pos, switch(piece.getClass().getSimpleName()){
+                            case "Pawn" -> new SuicideBomber(color);
+                            case "Knight" -> new TrojanHorse(color);
+                            case "Rook" -> new RookTower(color);
+                            case "Queen" -> new BallQueen(color);
+                            case "King" -> new SuperKing(0, color);
+                            case "Bishop" -> new Necromancer(color);
+                            default -> new Jester(color);
+                        });
+                    }
+                }
+
                 game.gui.redraw();
                 break;
         }
