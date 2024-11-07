@@ -1,5 +1,6 @@
 package main.java.Board;
 
+import main.java.Gameplay.Rule;
 import main.java.Main;
 import main.java.Pieces.LargePiece;
 import main.java.Pieces.Piece;
@@ -135,6 +136,11 @@ public class Board {
         }
 
         removePiece(pos);
+
+        if(Main.game.rules.remove(Rule.NEXT_PIECE_EXPLODES)){
+            explode(pos, piece);
+            return false;
+        }
 
         return true;
     }
