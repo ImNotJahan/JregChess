@@ -11,6 +11,7 @@ import main.java.Pieces.NPCs.Rules.WildHorse;
 import main.java.Pieces.NPCs.Rules.Wildlife;
 import main.java.Pieces.NPCs.Rules.Zombie;
 import main.java.Pieces.NPCs.Shop.Landmine;
+import main.java.Pieces.NPCs.Shop.Pittrap;
 import main.java.Pieces.Pawn;
 import main.java.Pieces.Piece;
 import main.java.Pieces.Shop.Jester;
@@ -196,6 +197,18 @@ public class RulesAndEvents {
                             default -> new Jester(color);
                         });
                     }
+                }
+
+                game.gui.redraw();
+                break;
+
+            case PITTRAPS:
+                for(int i = 0; i < 3; i++){
+                    Position pos = new Position(randInt(0, 7), randInt(0, 7));
+
+                    if(game.normal.pieceAt(pos)) continue;
+
+                    game.normal.addPiece(pos, new Pittrap());
                 }
 
                 game.gui.redraw();
