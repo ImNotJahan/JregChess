@@ -7,8 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TileComponent extends JButton {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     public TileComponent(int x, int y, GameState game){
         this.x = x;

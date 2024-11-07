@@ -7,6 +7,7 @@ import main.java.UI.Components.TileComponent;
 import main.java.Util.Position;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -33,8 +34,6 @@ public class BoardGUI extends JFrame {
 
         generalUI = new GeneralUI(game);
         generalUI.switchBoardButton.gui = this;
-
-        //new RulesUI(game);
     }
 
     private void initBoard(){
@@ -45,12 +44,14 @@ public class BoardGUI extends JFrame {
                 final int xf = x;
                 final int yf = y;
 
-                tile.addMouseListener(new MouseAdapter() {
+                MouseInputAdapter adapter = new MouseInputAdapter() {
                     @Override
-                    public void mouseClicked(MouseEvent e) {
+                    public void mouseReleased(MouseEvent e) {
                         handleClick(xf, yf);
                     }
-                });
+                };
+
+                tile.addMouseListener(adapter);
                 add(tile);
                 board[y][x] = tile;
             }
