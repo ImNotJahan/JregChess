@@ -16,15 +16,9 @@ public class Landmine extends NPC {
 
     @Override
     public boolean kill(Piece killer) {
-        // blow up pieces in 1-tile radius around piece
-        for(int x = -1; x <= 1; x++){
-            for(int y = -1; y <= 1; y++) {
-                if(x == 0 && y == 0) continue;
-
-                Main.game.normal.takePiece(position.add(x, y), this);
-            }
-        }
-
-        return true;
+        Main.game.normal.explode(position, this);
+        if(killer != null)
+            Main.game.normal.removePiece(killer.getPosition());
+        return false;
     }
 }

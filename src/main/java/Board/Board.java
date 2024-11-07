@@ -1,5 +1,6 @@
 package main.java.Board;
 
+import main.java.Main;
 import main.java.Pieces.LargePiece;
 import main.java.Pieces.Piece;
 import main.java.Util.Position;
@@ -58,8 +59,16 @@ public class Board {
         return true;
     }
 
-    public void explode(int x, int y) {
+    public void explode(Position position, Piece taker) {
+        removePiece(position);
 
+        for(int x = -1; x <= 1; x++){
+            for(int y = -1; y <= 1; y++) {
+                if(x == 0 && y == 0) continue;
+
+                takePiece(position.add(x, y), taker);
+            }
+        }
     }
 
     public boolean movePiece(Position to, Position from){

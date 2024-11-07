@@ -31,15 +31,11 @@ public class Jester extends Bishop {
             }
         }
 
-        // blow up pieces in 1-tile radius around piece
-        for(int x = -1; x <= 1; x++){
-            for(int y = -1; y <= 1; y++) {
-                if(x == 0 && y == 0) continue;
+        Main.game.getCurrentBoard().explode(position, this);
 
-                Main.game.normal.takePiece(position.add(x, y), this);
-            }
-        }
+        if(killer != null)
+            Main.game.normal.removePiece(killer.getPosition());
 
-        return true;
+        return false;
     }
 }
