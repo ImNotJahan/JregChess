@@ -3,7 +3,6 @@ package main.java.UI.Components;
 import main.java.Gameplay.Rule;
 import main.java.Main;
 import main.java.UI.Popups.NewRule;
-import main.java.UI.RulesUI;
 import main.java.Util.Icons;
 
 import javax.swing.*;
@@ -33,7 +32,7 @@ public class RuleButton extends JButton {
             case ZOMBIE_APOCALYPSE -> "zombie";
             case GUN -> "gun";
             case WILD_LIFE -> "wildlife";
-            case WILD_HORSE -> "white/zebra";
+            case WILD_HORSE -> "wild-horse";
             case MEGA_CASTLE -> "white/king";
             case WHIRLPOOL -> "whirlpool";
             case LANDMINES -> "landmine";

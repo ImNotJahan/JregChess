@@ -58,6 +58,10 @@ public class Board {
         return true;
     }
 
+    public void explode(int x, int y) {
+
+    }
+
     public boolean movePiece(Position to, Position from){
         return movePiece(to, from, false);
     }

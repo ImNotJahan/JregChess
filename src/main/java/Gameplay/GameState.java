@@ -2,6 +2,7 @@ package main.java.Gameplay;
 
 import main.java.Board.Board;
 import main.java.Main;
+import main.java.Pieces.NPCs.NPC;
 import main.java.Pieces.Piece;
 import main.java.UI.BoardGUI;
 import main.java.UI.Popups.NewRule;
@@ -18,6 +19,8 @@ public class GameState {
     public Board heaven = new Board(Board.BoardType.Heaven);
     public Board hell = new Board(Board.BoardType.Hell);
 
+    public ArrayList<NPC> automovingPieces = new ArrayList<>();
+
     public int whiteGP = 5;
     public int blackGP = 5;
 
@@ -32,8 +35,12 @@ public class GameState {
     }
 
     public void addRule(Rule rule){
-        rules.add(rule);
         action = Action.Nothing;
+
+        RulesAndEvents.handleNew(rule, this);
+
+        if(!RulesAndEvents.isEvent(rule))
+            rules.add(rule);
     }
 
     private void init() {
@@ -125,6 +132,10 @@ public class GameState {
             JOptionPane.showMessageDialog(gui, "Black wins!");
     }
 
+    public void dialog(String message) {
+        JOptionPane.showMessageDialog(gui, message);
+    }
+
     private int funds(){
         if(whiteToMove) return whiteGP;
         return blackGP;
@@ -189,7 +200,12 @@ public class GameState {
     public void nextTurn(){
         whiteToMove = !whiteToMove;
         turnsSinceNewRule++;
-        
+
+        for(int i = 0; i < automovingPieces.size(); i++) {
+            // to avoid exception when modifing arraylist during run
+            automovingPieces.get(i).automove(normal);
+        }
+
         checkIfNewRule();
     }
     

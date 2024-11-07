@@ -39,6 +39,7 @@ public class Icons {
             addNewIcon("whirlpool.png");
             addNewIcon("wildlife.png");
             addNewIcon("zombie.png");
+            addNewIcon("wild-horse.png");
 
             addNewIcon("white/angry-rook.png");
             addNewIcon("white/ball-queen.png");

@@ -26,4 +26,8 @@ public class NPC extends Piece {
         // NPCs don't get to go to the afterlife.
         return true;
     }
+
+    public void automove(Board board){
+
+    }
 }
