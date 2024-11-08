@@ -80,4 +80,6 @@ public abstract class Piece {
     public abstract Icon getIcon();
 
     public void capturePiece(Piece piece, Position to, Position from) {}
+
+    public void automove(Board board){}
 }

@@ -41,6 +41,7 @@ public class Icons {
             addNewIcon("zombie.png");
             addNewIcon("wild-horse.png");
             addNewIcon("explosion.png");
+            addNewIcon("winds.png");
 
             addNewIcon("white/angry-rook.png");
             addNewIcon("white/ball-queen.png");
@@ -114,6 +115,12 @@ public class Icons {
             addNewIcon("void1.png");
             addNewIcon("void2.png");
             addNewIcon("void3.png");
+
+            addNewIcon("aggro-angel.png");
+            addNewIcon("aggro-angel0.png");
+            addNewIcon("aggro-angel1.png");
+            addNewIcon("aggro-angel2.png");
+            addNewIcon("aggro-angel3.png");
         } catch(Exception e){
             System.out.println(e);
         }

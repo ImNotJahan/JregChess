@@ -1,8 +1,13 @@
 package main.java.Pieces.NPCs;
 
 import main.java.Board.Board;
+import main.java.Main;
 import main.java.Pieces.LargePiece;
+import main.java.Pieces.Piece;
+import main.java.Util.Icons;
 import main.java.Util.Position;
+
+import javax.swing.*;
 
 public class Angel extends LargePiece {
     public Angel(int id) {
@@ -32,6 +37,18 @@ public class Angel extends LargePiece {
 
     @Override
     public boolean validMoveP(Position to, Board board) {
+        return false;
+    }
+
+    @Override
+    public boolean kill(Piece killer) {
+        if(JOptionPane.showConfirmDialog(Main.game.gui, Icons.icons.get("aggro-angel.png"), "Free him?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            Piece piece = new AggroAngel(0);
+            Main.game.normal.addPiece(new Position(3, 3), piece);
+            Main.game.automovingPieces.add(piece);
+            return true;
+        }
+
         return false;
     }
 }

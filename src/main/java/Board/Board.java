@@ -63,6 +63,15 @@ public class Board {
         return true;
     }
 
+    public void forceMovePiece(Position to, Position from){
+        Piece piece = getPieceAt(from);
+
+        if(piece instanceof LargePiece) return;
+
+        removePiece(from);
+        addPiece(to, piece);
+    }
+
     private boolean exploding = false;
     public void explode(Position position, Piece taker) {
         removePiece(position);

@@ -2,6 +2,7 @@ package main.java.Gameplay;
 
 import main.java.Board.Board;
 import main.java.Main;
+import main.java.Pieces.NPCs.AggroAngel;
 import main.java.Pieces.NPCs.NPC;
 import main.java.Pieces.Piece;
 import main.java.UI.BoardGUI;
@@ -19,7 +20,7 @@ public class GameState {
     public Board heaven = new Board(Board.BoardType.Heaven);
     public Board hell = new Board(Board.BoardType.Hell);
 
-    public ArrayList<NPC> automovingPieces = new ArrayList<>();
+    public ArrayList<Piece> automovingPieces = new ArrayList<>();
 
     public int whiteGP = 5;
     public int blackGP = 5;
@@ -127,9 +128,9 @@ public class GameState {
 
     public void gameWon(Piece.Color loosingColor){
         if(loosingColor == Piece.Color.Black)
-            JOptionPane.showMessageDialog(gui, "White wins!");
+            dialog("White wins!");
         else
-            JOptionPane.showMessageDialog(gui, "Black wins!");
+            dialog("Black wins!");
     }
 
     public void dialog(String message) {
