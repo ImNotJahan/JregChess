@@ -1,6 +1,7 @@
 package main.java.Gameplay;
 
 import main.java.Board.Board;
+import main.java.Main;
 import main.java.Pieces.*;
 import main.java.Pieces.NPCs.*;
 import main.java.Util.Position;
@@ -47,7 +48,7 @@ public class Setup {
 
         hell.addPiece(new Position(2, 5), new Portal());
 
-        hell.addPiece(new Position(4, 2, Board.BoardType.Hell), new Devil(0));
+        //hell.addPiece(new Position(4, 2, Board.BoardType.Hell), new Devil(0));
     }
 
     public static void setupHeaven(Board heaven){
@@ -55,8 +56,10 @@ public class Setup {
 
         heaven.addPiece(new Position(0, 7), new Portal());
 
-        heaven.addPiece(new Position(1, 1, Board.BoardType.Heaven), new Angel(0));
-        heaven.addPiece(new Position(5, 2, Board.BoardType.Heaven), new Atheism(0));
+        if(!Main.game.online) {
+            heaven.addPiece(new Position(1, 1, Board.BoardType.Heaven), new Angel(0));
+            heaven.addPiece(new Position(5, 2, Board.BoardType.Heaven), new Atheism(0));
+        }
         heaven.addPiece(new Position(6, 5, Board.BoardType.Heaven), new Church(0));
     }
 }

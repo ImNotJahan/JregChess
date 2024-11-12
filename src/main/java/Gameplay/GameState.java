@@ -2,18 +2,21 @@ package main.java.Gameplay;
 
 import main.java.Board.Board;
 import main.java.Main;
-import main.java.Pieces.NPCs.AggroAngel;
-import main.java.Pieces.NPCs.NPC;
+import main.java.Networking.API;
 import main.java.Pieces.Piece;
 import main.java.UI.BoardGUI;
+import main.java.UI.Components.SwitchBoardButton;
 import main.java.UI.Popups.NewRule;
 import main.java.Util.IDs;
 import main.java.Util.Position;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class GameState {
+    public StringBuilder currentMove = new StringBuilder();
+
     public final ArrayList<Rule> rules = new ArrayList<>();
 
     public final Board normal = new Board(Board.BoardType.Normal);
@@ -30,13 +33,32 @@ public class GameState {
     public Board.BoardType currentBoard = Board.BoardType.Normal;
 
     private int turnsSinceNewRule = 0;
-    
+
+    public final boolean online;
+    public final boolean playingAsWhite; // only relevant if online game
+
     public GameState(){
+        this(false, true);
+    }
+
+    public GameState(boolean online, boolean playingAsWhite){
+        this.online = online;
+        this.playingAsWhite = playingAsWhite;
+
+        if(online){
+            dialog("You are playing as " + (playingAsWhite ? "white" : "black"));
+        }
+
         init();
     }
 
     public void addRule(Rule rule){
         action = Action.Nothing;
+
+        if(online && (whiteToMove == playingAsWhite)) {
+            currentMove.append("R");
+            currentMove.append(RulesAndEvents.ruleToChar(rule));
+        }
 
         RulesAndEvents.handleNew(rule, this);
 
@@ -91,6 +113,16 @@ public class GameState {
         upgradingFrom = from;
         upgradingTo = to;
         action = Action.Upgrading;
+
+        if(online && (whiteToMove == playingAsWhite)) {
+            currentMove.append("U");
+            currentMove.append(IDs.idToChar(to));
+
+            for(String id : from)
+                currentMove.append(IDs.idToChar(id));
+
+            currentMove.append('Z');
+        }
     }
 
     public void nowHandlingPopup(){
@@ -108,6 +140,13 @@ public class GameState {
         action = Action.Buying;
         itemBeingBoughtCost = cost;
         itemBeingBoughtId = id;
+
+        if(online && (whiteToMove == playingAsWhite)) {
+            currentMove.append("B");
+            currentMove.append(IDs.idToChar(id));
+            currentMove.append(itemBeingBoughtCost);
+            currentMove.append('Z');
+        }
     }
 
     public boolean isUpgrading(){
@@ -198,13 +237,82 @@ public class GameState {
         else blackGP += amount;
     }
 
-    public void nextTurn(){
+    public void handleTurn(String move){
+        for(int i = 0; i < move.length(); i+=2){
+            if(move.charAt(i) == 'R'){
+                turnsSinceNewRule = 0;
+                addRule(RulesAndEvents.charToRule(move.charAt(i + 1)));
+            } else if(move.charAt(i) == 'B'){
+                final String buying = IDs.charToId(move.charAt(i + 1));
+                int cost = 0;
+
+                i++;
+
+                while(move.charAt(i + 1) != 'Z'){
+                    i++;
+
+                    cost *= 10;
+                    cost += ctoi(move.charAt(i));
+                }
+
+                nowBuying(buying, cost);
+            } else if(move.charAt(i) == 'U'){
+                final String to = IDs.charToId(move.charAt(i + 1));
+                ArrayList<String> from = new ArrayList<>();
+
+                i++;
+
+                while(move.charAt(i + 1) != 'Z'){
+                    i++;
+
+                    from.add(IDs.charToId(move.charAt(i)));
+                }
+
+                nowUpgrading(from.toArray(new String[0]), to);
+            } else if(move.charAt(i) == 'S') {
+                SwitchBoardButton.switchBoard();
+            }else {
+                handleClick(ctoi(move.charAt(i)), ctoi(move.charAt(i + 1)));
+            }
+        }
+    }
+
+    private int ctoi(char c){
+        return switch(c){
+            case '0' -> 0;
+            case '1' -> 1;
+            case '2' -> 2;
+            case '3' -> 3;
+            case '4' -> 4;
+            case '5' -> 5;
+            case '6' -> 6;
+            case '7' -> 7;
+            case '8' -> 8;
+            case '9' -> 9;
+            default -> -1;
+        };
+    }
+
+    public void nextTurn() {
         whiteToMove = !whiteToMove;
         turnsSinceNewRule++;
 
-        for(int i = 0; i < automovingPieces.size(); i++) {
+        gui.setTitle(whiteToMove ? "White to move" : "Black to move");
+
+        for (int i = 0; i < automovingPieces.size(); i++) {
             // to avoid exception when modifing arraylist during run
             automovingPieces.get(i).automove(normal);
+        }
+
+        if(online && (whiteToMove == playingAsWhite)) {
+            Taskbar.getTaskbar().requestWindowUserAttention(gui);
+        } else if(online) {
+            API.move(Main.seed, currentMove.toString());
+            currentMove = new StringBuilder();
+
+            Main.waitForTurn();
+
+            return;
         }
 
         checkIfNewRule();
@@ -219,6 +327,11 @@ public class GameState {
     }
     
     public void handleClick(int x, int y){
+        if(online && whiteToMove == playingAsWhite){
+            currentMove.append(x);
+            currentMove.append(y);
+        }
+
         if(action == Action.HandlingPopup) return;
 
         if(action == Action.Upgrading) {

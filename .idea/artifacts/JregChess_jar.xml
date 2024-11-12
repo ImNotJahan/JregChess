@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JregChess:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JregChess_jar</output-path>
+    <root id="archive" name="JregChess.jar">
+      <element id="module-output" name="JregChess" />
+    </root>
+  </artifact>
+</component>

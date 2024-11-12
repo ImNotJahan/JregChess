@@ -37,4 +37,78 @@ public class IDs {
             default -> new Placeholder();
         };
     }
+
+    public static char idToChar(String id){
+        return switch (id){
+            case "pawn" -> 'a';
+            case "rook" -> 'b';
+            case "knight" -> 'c';
+            case "bishop" -> 'd';
+            case "king" -> 'e';
+            case "queen" -> 'f';
+            case "suicide-bomber" -> 'g';
+            case "knight-queen" -> 'h';
+            case "bishop-knight" -> 'i';
+            case "rook-knight" -> 'j';
+            case "angry-rook" -> 'k';
+            case "super-king" -> 'l';
+            case "necromancer" -> 'm';
+            case "super-bishop" -> 'n';
+            case "ball-queen" -> 'o';
+            case "centaur" -> 'p';
+            case "unicorn" -> 'q';
+            case "trojan-horse" -> 'r';
+            case "rook-tower" -> 's';
+            case "zebra" -> 't';
+            case "giraffe" -> 'u';
+            case "landmine" -> 'v';
+            case "bomb" -> 'w';
+            case "jester" -> 'x';
+            case "portal" -> 'y';
+            case "Pawn" -> 'A';
+            case "Bishop" -> 'B';
+            case "King" -> 'C';
+            case "Knight" -> 'D';
+            case "Queen" -> 'E';
+            case "Rook" -> 'F';
+            default -> 'z';
+        };
+    }
+
+    public static String charToId(char c){
+        return switch(c){
+            case 'a' -> "pawn";
+            case 'b' -> "rook";
+            case 'c' -> "knight";
+            case 'd' -> "bishop";
+            case 'e' -> "king";
+            case 'f' -> "queen";
+            case 'g' -> "suicide-bomber";
+            case 'h' -> "knight-queen";
+            case 'i' -> "bishop-knight";
+            case 'j' -> "rook-knight";
+            case 'k' -> "angry-rook";
+            case 'l' -> "super-king";
+            case 'm' -> "necromancer";
+            case 'n' -> "super-bishop";
+            case 'o' -> "ball-queen";
+            case 'p' -> "centaur";
+            case 'q' -> "unicorn";
+            case 'r' -> "trojan-horse";
+            case 's' -> "rook-tower";
+            case 't' -> "zebra";
+            case 'u' -> "giraffe";
+            case 'v' -> "landmine";
+            case 'w' -> "bomb";
+            case 'x' -> "jester";
+            case 'y' -> "portal";
+            case 'A' -> "Pawn";
+            case 'B' -> "Bishop";
+            case 'C' -> "King";
+            case 'D' -> "Knight";
+            case 'E' -> "Queen";
+            case 'F' -> "Rook";
+            default -> "placeholder";
+        };
+    }
 }

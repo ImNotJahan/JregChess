@@ -1,8 +1,8 @@
 package main.java.Gameplay;
 
 import main.java.Board.Board;
-import main.java.Pieces.Bishop;
-import main.java.Pieces.Knight;
+import main.java.Main;
+import main.java.Pieces.*;
 import main.java.Pieces.NPCs.Coin;
 import main.java.Pieces.NPCs.NPC;
 import main.java.Pieces.NPCs.Portal;
@@ -11,8 +11,6 @@ import main.java.Pieces.NPCs.Shop.Landmine;
 import main.java.Pieces.NPCs.Shop.Pittrap;
 import main.java.Pieces.NPCs.Shop.Void;
 import main.java.Pieces.NPCs.Shop.Whirlpool;
-import main.java.Pieces.Pawn;
-import main.java.Pieces.Piece;
 import main.java.Pieces.Shop.Jester;
 import main.java.Pieces.Upgrades.*;
 import main.java.Util.Position;
@@ -191,7 +189,7 @@ public class RulesAndEvents {
                             case "Knight" -> new TrojanHorse(color);
                             case "Rook" -> new RookTower(color);
                             case "Queen" -> new BallQueen(color);
-                            case "King" -> new SuperKing(0, color);
+                            case "King" -> new King(color);
                             case "Bishop" -> new Necromancer(color);
                             default -> new Jester(color);
                         });
@@ -235,6 +233,66 @@ public class RulesAndEvents {
     }
 
     public static int randInt(int min, int max){
-        return min + (int)(Math.random() * ((max - min) + 1));
+        return Main.random.nextInt(min, max + 1);
+    }
+
+    public static char ruleToChar(Rule rule){
+        return switch (rule){
+            case CENTAUR_MAKING -> 'a';
+            case KING_DIES_IN_HELL -> 'b';
+            case SUICIDE_BOMBER_HEAVEN -> 'c';
+            case NEXT_PIECE_EXPLODES -> 'd';
+            case PAWNS_MOVE_FOUR -> 'e';
+            case BISHOPS_GAIN_NECROMANCY -> 'f';
+            case ZOMBIE_APOCALYPSE -> 'g';
+            case GUN -> 'h';
+            case WILD_LIFE -> 'i';
+            case WILD_HORSE -> 'j';
+            case TREADMILL_BOARD -> 'k';
+            case MEGA_CASTLE -> 'l';
+            case WHIRLPOOL -> 'm';
+            case LANDMINES -> 'n';
+            case VOID -> 'o';
+            case PITTRAPS -> 'p';
+            case EVERYONE_UPGRADES -> 'q';
+            case GOLD_RUSH -> 'r';
+            case METEOR_SHOWER -> 's';
+            case UNICORNS -> 't';
+            case PORTALS_OPEN -> 'u';
+            case PAWN_UPGRADE -> 'v';
+            case MORE_GOLD -> 'w';
+            case TREASURE -> 'x';
+            case POTIONS -> 'y';
+        };
+    }
+
+    public static Rule charToRule(char rule){
+        return switch (rule){
+            case 'a' -> Rule.CENTAUR_MAKING;
+            case 'b' -> Rule.KING_DIES_IN_HELL;
+            case 'c' -> Rule.SUICIDE_BOMBER_HEAVEN;
+            case 'd' -> Rule.NEXT_PIECE_EXPLODES;
+            case 'e' -> Rule.PAWNS_MOVE_FOUR;
+            case 'f' -> Rule.BISHOPS_GAIN_NECROMANCY;
+            case 'g' -> Rule.ZOMBIE_APOCALYPSE;
+            case 'h' -> Rule.GUN;
+            case 'i' -> Rule.WILD_LIFE;
+            case 'j' -> Rule.WILD_HORSE;
+            case 'k' -> Rule.TREADMILL_BOARD;
+            case 'l' -> Rule.MEGA_CASTLE;
+            case 'm' -> Rule.WHIRLPOOL;
+            case 'n' -> Rule.LANDMINES;
+            case 'o' -> Rule.VOID;
+            case 'p' -> Rule.PITTRAPS;
+            case 'q' -> Rule.EVERYONE_UPGRADES;
+            case 'r' -> Rule.GOLD_RUSH;
+            case 's' -> Rule.METEOR_SHOWER;
+            case 't' -> Rule.UNICORNS;
+            case 'u' -> Rule.PORTALS_OPEN;
+            case 'v' -> Rule.PAWN_UPGRADE;
+            case 'w' -> Rule.MORE_GOLD;
+            case 'x' -> Rule.TREASURE;
+            default -> Rule.POTIONS;
+        };
     }
 }

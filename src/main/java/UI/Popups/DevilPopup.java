@@ -2,7 +2,10 @@ package main.java.UI.Popups;
 
 import main.java.Gameplay.GameState;
 import main.java.Main;
+import main.java.Pieces.NPCs.AggroDevil;
+import main.java.Pieces.Piece;
 import main.java.Util.Icons;
+import main.java.Util.Position;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,6 +53,17 @@ public class DevilPopup extends JFrame {
         removeRulesButton.addMouseListener(closeThis);
         destroyGridButton.addMouseListener(closeThis);
         getGoldButton.addMouseListener(closeThis);
+
+        releaseButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Piece devil = new AggroDevil(0);
+                Main.game.automovingPieces.add(devil);
+                Main.game.normal.addPiece(new Position(3, 3), devil);
+
+                Main.game.gui.redraw();
+            }
+        });
 
         getGoldButton.addMouseListener(new MouseAdapter() {
             @Override

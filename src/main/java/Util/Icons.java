@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.util.HashMap;
 
 public class Icons {
-    public static HashMap<String, Icon> icons = new HashMap<>();
+    public static HashMap<String, ImageIcon> icons = new HashMap<>();
 
     public static void init(){
         try {

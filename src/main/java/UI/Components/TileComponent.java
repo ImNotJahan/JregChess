@@ -2,19 +2,45 @@ package main.java.UI.Components;
 
 import main.java.Gameplay.GameState;
 import main.java.Pieces.Piece;
+import main.java.Util.Icons;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class TileComponent extends JButton {
     private final int x;
     private final int y;
+
+    private ImageIcon icon = null;
 
     public TileComponent(int x, int y, GameState game){
         this.x = x;
         this.y = y;
 
         init(game);
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent event) {
+                resizeIcon();
+            }
+        });
+    }
+
+    private void resizeIcon(){
+        try{
+            if(icon == null) return;
+
+            int size = Math.min(getHeight(), getWidth());
+
+            Image image = icon.getImage().getScaledInstance(size, size, Image.SCALE_DEFAULT);
+            setIcon(new ImageIcon(image));
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public void init(GameState game){
@@ -64,10 +90,17 @@ public class TileComponent extends JButton {
         else refreshColor(game);
     }
 
+    @Override
+    public void setIcon(Icon defaultIcon) {
+        super.setIcon(defaultIcon);
+        icon = (ImageIcon) defaultIcon;
+    }
+
     public void setPiece(Piece piece){
         if(piece == null) setIcon(null);
         else {
             setIcon(piece.getIcon());
+            resizeIcon();
         }
     }
 }

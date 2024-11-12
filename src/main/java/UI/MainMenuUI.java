@@ -21,8 +21,9 @@ public class MainMenuUI extends JFrame {
     }
 
     private void init(){
-        JButton singleplayerButton = new JButton("          Offline          ");
-        JButton multiplayerButton = new JButton("          Online          ");
+        JButton singleplayerButton = new JButton("Offline game");
+        JButton multiplayerButton = new JButton("Create online game");
+        JButton joinMultiplayerButton = new JButton("Join online game");
 
         singleplayerButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -33,7 +34,26 @@ public class MainMenuUI extends JFrame {
             }
         });
 
+        multiplayerButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Main.startMultiplayerGame();
+                setVisible(false);
+                dispose();
+            }
+        });
+
+        joinMultiplayerButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Main.joinMultiplayerGame(JOptionPane.showInputDialog("Enter join code:"));
+                setVisible(false);
+                dispose();
+            }
+        });
+
         add(singleplayerButton);
         add(multiplayerButton);
+        add(joinMultiplayerButton);
     }
 }

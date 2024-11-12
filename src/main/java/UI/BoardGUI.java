@@ -3,14 +3,14 @@ package main.java.UI;
 import main.java.Board.Board;
 import main.java.Gameplay.GameState;
 import main.java.Pieces.Piece;
+import main.java.UI.Components.SwitchBoardButton;
 import main.java.UI.Components.TileComponent;
 import main.java.Util.Position;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class BoardGUI extends JFrame {
     private final TileComponent[][] board = new TileComponent[8][8];
@@ -19,10 +19,9 @@ public class BoardGUI extends JFrame {
     private final GameState game;
 
     public BoardGUI(GameState game) {
-        setTitle("Chess");
+        setTitle("White to move");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(8, 8));
-        setResizable(false);
 
         this.game = game;
 
@@ -32,8 +31,15 @@ public class BoardGUI extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                setSize(new Dimension(getWidth(), getHeight()));
+            }
+        });
+
         generalUI = new GeneralUI(game);
-        generalUI.switchBoardButton.gui = this;
+        SwitchBoardButton.gui = this;
     }
 
     private void initBoard(){

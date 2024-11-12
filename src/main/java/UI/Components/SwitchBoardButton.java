@@ -9,7 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SwitchBoardButton extends JButton {
-    public BoardGUI gui;
+    public static BoardGUI gui;
 
     public SwitchBoardButton(){
         super();
@@ -19,24 +19,32 @@ public class SwitchBoardButton extends JButton {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                switch (Main.game.currentBoard){
-                    case Normal:
-                        if(Main.game.hell != null) Main.game.currentBoard = Board.BoardType.Hell;
-                        else if(Main.game.heaven != null) Main.game.currentBoard = Board.BoardType.Heaven;
-                        break;
-
-                    case Hell:
-                        if(Main.game.heaven != null) Main.game.currentBoard = Board.BoardType.Heaven;
-                        else Main.game.currentBoard = Board.BoardType.Normal;
-                        break;
-
-                    case Heaven:
-                        Main.game.currentBoard = Board.BoardType.Normal;
-                        break;
-                };
-
-                gui.redraw();
+                switchBoard();
             }
         });
+    }
+
+    public static void switchBoard(){
+        if(Main.game.online && (Main.game.playingAsWhite == Main.game.isWhiteToMove())){
+            Main.game.currentMove.append("SB");
+        }
+
+        switch (Main.game.currentBoard){
+            case Normal:
+                if(Main.game.hell != null) Main.game.currentBoard = Board.BoardType.Hell;
+                else if(Main.game.heaven != null) Main.game.currentBoard = Board.BoardType.Heaven;
+                break;
+
+            case Hell:
+                if(Main.game.heaven != null) Main.game.currentBoard = Board.BoardType.Heaven;
+                else Main.game.currentBoard = Board.BoardType.Normal;
+                break;
+
+            case Heaven:
+                Main.game.currentBoard = Board.BoardType.Normal;
+                break;
+        };
+
+        gui.redraw();
     }
 }

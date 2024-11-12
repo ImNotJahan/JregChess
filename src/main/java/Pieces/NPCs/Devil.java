@@ -43,6 +43,6 @@ public class Devil extends LargePiece {
         Main.game.nowHandlingPopup();
         new DevilPopup(Main.game);
         
-        return false;
+        return true;
     }
 }
