@@ -1,0 +1,176 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 401b6faf5869481d9b168287b7a82b9e, type: 3}
+  m_Name: PieceSprites
+  m_EditorClassIdentifier: 
+  entries:
+  - id: pawn
+    white: {fileID: 792778199420499268, guid: 1a95e7752ffaa4b918bbf8f293a19d07, type: 3}
+    black: {fileID: 792778199420499268, guid: b269813fe0cf3424b9fc920b05e4bfa5, type: 3}
+    neutral: {fileID: 0}
+  - id: rook
+    white: {fileID: 8473794708530005867, guid: 4d1aa7efd4d064822be012422cd289c0, type: 3}
+    black: {fileID: 8473794708530005867, guid: ecf94f9c06e584b9a809b1557aeaabaa, type: 3}
+    neutral: {fileID: 0}
+  - id: knight
+    white: {fileID: 4495478712733764576, guid: 60db230e7ea794ef2b5740af8aa621ef, type: 3}
+    black: {fileID: 4495478712733764576, guid: cf82a658fd6014c868fadc4467c989c4, type: 3}
+    neutral: {fileID: 0}
+  - id: bishop
+    white: {fileID: -2417847074671435042, guid: 4736eb47415444f808521b58184fcbc3, type: 3}
+    black: {fileID: -2417847074671435042, guid: c47b38e40353b4dc88d4960f5b4fb86d, type: 3}
+    neutral: {fileID: 0}
+  - id: queen
+    white: {fileID: 6851498383279292439, guid: 6aeb5a89382b94e63bf450eb2771d272, type: 3}
+    black: {fileID: 6851498383279292439, guid: f2970448893d74071af55e58bdc6bde4, type: 3}
+    neutral: {fileID: 0}
+  - id: king
+    white: {fileID: -1724822148711148119, guid: 306152a658816428b8581c0c2dc7a9bb, type: 3}
+    black: {fileID: -1724822148711148119, guid: fba076198af2444e29fa16673b02b94d, type: 3}
+    neutral: {fileID: 0}
+  - id: suicide-bomber
+    white: {fileID: -1037535521717398056, guid: 8bb5f0b8767db47f2abd5b8f7aed84c5, type: 3}
+    black: {fileID: -1037535521717398056, guid: 05086488e6a7b4294ba09da53e324c20, type: 3}
+    neutral: {fileID: 0}
+  - id: centaur
+    white: {fileID: 5281301854931796324, guid: 169b65c3f651341b081ab86f02c80229, type: 3}
+    black: {fileID: 5281301854931796324, guid: d9f15eb42dadc4c1b8ff6b07aaf6c136, type: 3}
+    neutral: {fileID: 0}
+  - id: unicorn
+    white: {fileID: -6836061800980497416, guid: 8e5d179ef8d2d4fa1b0b3126a076f41b, type: 3}
+    black: {fileID: -6836061800980497416, guid: 02231be47a7a54500adb4e58ec998c77, type: 3}
+    neutral: {fileID: 0}
+  - id: trojan-horse
+    white: {fileID: -364143507716327548, guid: 318d5bb2d331d46498b20b3c4bdbb79f, type: 3}
+    black: {fileID: -364143507716327548, guid: d53b3e5d8b3944c4f9a1e9e549d5f554, type: 3}
+    neutral: {fileID: 0}
+  - id: rook-knight
+    white: {fileID: -1313886552983131578, guid: 81afb50ab8c2b409e83df6744e392d01, type: 3}
+    black: {fileID: -1313886552983131578, guid: 36509e922df3743978e49fe9fbca89ab, type: 3}
+    neutral: {fileID: 0}
+  - id: bishop-knight
+    white: {fileID: -6433468263990012801, guid: 16dca919615994150969f2eab4f4b9d8, type: 3}
+    black: {fileID: -6433468263990012801, guid: 28a5a5b9dc7d543aaa200625877bbe4d, type: 3}
+    neutral: {fileID: 0}
+  - id: knight-queen
+    white: {fileID: 5509938931207220651, guid: 7d166ab538880484f9fe6fcb561a63dc, type: 3}
+    black: {fileID: 5509938931207220651, guid: 7fc2aebbe20894245bfe74c96c78c153, type: 3}
+    neutral: {fileID: 0}
+  - id: necromancer
+    white: {fileID: -4412621582066746438, guid: d3f5f02c61db24d32b2405c0aa640e81, type: 3}
+    black: {fileID: -4412621582066746438, guid: a866afb7062964426be64b9694652504, type: 3}
+    neutral: {fileID: 0}
+  - id: super-bishop
+    white: {fileID: 8805657038569885789, guid: 0c49d3c41db9c4e8580623c68844e56a, type: 3}
+    black: {fileID: 8805657038569885789, guid: c9764d94d068c4f3284911e8d01fc55f, type: 3}
+    neutral: {fileID: 0}
+  - id: ball-queen
+    white: {fileID: 3413239529511870330, guid: 7a3e3d1f94beb445c8d97fb3b010a6a5, type: 3}
+    black: {fileID: 3413239529511870330, guid: 798f8bb2f672847f3b44d6b57ffedee6, type: 3}
+    neutral: {fileID: 0}
+  - id: angry-rook
+    white: {fileID: -8612903093759012691, guid: 7325e97e063734bd29f16a8c107ac92a, type: 3}
+    black: {fileID: -8612903093759012691, guid: ce0c636285468488ca52f503941e6263, type: 3}
+    neutral: {fileID: 0}
+  - id: rook-tower
+    white: {fileID: -3748224209216393403, guid: fefb7c331e59a4362a7b148648619ec5, type: 3}
+    black: {fileID: -3748224209216393403, guid: b710c31d1c82c4cab92d636cb9c61bf4, type: 3}
+    neutral: {fileID: 0}
+  - id: zebra
+    white: {fileID: 2412525675868892666, guid: ad2d4696f10e144a196cf5779cd3a9c3, type: 3}
+    black: {fileID: 2412525675868892666, guid: caf2465f624fc40dda751c6ffb5f1db1, type: 3}
+    neutral: {fileID: 0}
+  - id: giraffe
+    white: {fileID: 5604796196903453309, guid: a29559ddb5b80470ba0d7671acc12cbf, type: 3}
+    black: {fileID: 5604796196903453309, guid: c381bd42d64654f86958d28cde48c84b, type: 3}
+    neutral: {fileID: 0}
+  - id: jester
+    white: {fileID: 7647298288565211277, guid: 1546ddef63c794f5a9a9fb8e5df0eb4d, type: 3}
+    black: {fileID: 7647298288565211277, guid: 367f03bc96d5a437ebdd93fff11d5c77, type: 3}
+    neutral: {fileID: 0}
+  - id: super-king
+    white: {fileID: 21300000, guid: a7143a6b701364adaa60ef6ac70c92fd, type: 3}
+    black: {fileID: -4990520364140166911, guid: 4601d0ef950cb4a22ae8b775038046b2, type: 3}
+    neutral: {fileID: 0}
+  - id: coin
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 7675826601332790545, guid: 07f0ac2649063459d855c7f813a391d1, type: 3}
+  - id: treasure
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 7660517227772562288, guid: 26779a3b21e8847858948973a8c1ac6a, type: 3}
+  - id: portal
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: -5816642994671486895, guid: eae6d53f98e924b1ba463a5f94c2768a, type: 3}
+  - id: bomb
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: -2613247888821195678, guid: a670e1a69d35d48188b1a3f47cfd71a4, type: 3}
+  - id: landmine
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: -2055117614921296923, guid: 63d65331b09924383978b83fb7a95e0c, type: 3}
+  - id: pittrap
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: -4170759884246852711, guid: 200dc8547630b45eea876638501f4e04, type: 3}
+  - id: whirlpool
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: -8203960809527574535, guid: 813f9e6db1b3b44caa81e1b08dcab6fb, type: 3}
+  - id: meteor
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: -925345978958199149, guid: fe877afe26eb045d0a7c1abc20396296, type: 3}
+  - id: wild-horse
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 5344253824953594289, guid: 73f3f256084034b318adf7f381d40f38, type: 3}
+  - id: wildlife
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 4439343653186579440, guid: 13bc598c5a41a41419d8d72c424bd8f6, type: 3}
+  - id: zombie
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: -5782521184205631276, guid: 0b201cf49eed3429e850e0d7ed864cca, type: 3}
+  - id: angel
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 21300000, guid: 1cd2cd57c344d4f3793693d9605e5ba3, type: 3}
+  - id: aggro-angel
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 21300000, guid: a9638bd313dc54894b0baefbd41ef70c, type: 3}
+  - id: atheism
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 21300000, guid: 6c0f254a4903d4064acc00d75a6931a5, type: 3}
+  - id: church
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 21300000, guid: f4221e177ce7f4d38a64324b87a4f837, type: 3}
+  - id: devil
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 21300000, guid: 27b5008968fff471a858c46873328278, type: 3}
+  - id: void
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 21300000, guid: 76d9ccbebe07c445e8442269a323fdff, type: 3}
+  - id: aggro-devil
+    white: {fileID: 0}
+    black: {fileID: 0}
+    neutral: {fileID: 21300000, guid: 27b5008968fff471a858c46873328278, type: 3}
+  fallback: {fileID: -6674868978544099146, guid: da678132a0dd8445f971e622628b5883, type: 3}

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dae8833200d54f959746fd4f4fb573c, type: 3}
+  m_Name: Icons
+  m_EditorClassIdentifier: Assembly-CSharp::Views.IconLibrary
+  entries:
+  - id: explosion
+    sprite: {fileID: -8092295105046505211, guid: fcb022bf4193743a5bac77775e32143d, type: 3}
+  - id: winds
+    sprite: {fileID: -4830383175595999468, guid: bc4d122d08e7a4781b88ecd3f6692422, type: 3}
+  - id: coin
+    sprite: {fileID: 7675826601332790545, guid: 07f0ac2649063459d855c7f813a391d1, type: 3}
+  - id: upgrade-icon
+    sprite: {fileID: 7186290325828201133, guid: 45ae8d550019f4d81ab0d9d99b4ac894, type: 3}
+  - id: hell
+    sprite: {fileID: -661766990909252259, guid: c414a1215f5d94a11b8c70cfdaf4d00d, type: 3}
+  - id: devil
+    sprite: {fileID: -1127933441503263673, guid: e99a8e6e7e707417da5dde32e13aae5f, type: 3}
+  - id: atheism
+    sprite: {fileID: -2236666701572157217, guid: d6b467b5031c940699277e1ae665610c, type: 3}
+  - id: aggro-angel
+    sprite: {fileID: 834804937043907832, guid: a65bf232fa7bf44689cd7b2c779ac689, type: 3}
+  - id: gun
+    sprite: {fileID: -6628414004274166170, guid: 0168c2a870bc0426f87913011344f964, type: 3}
+  - id: potion-seller
+    sprite: {fileID: 1979787254572709140, guid: 2a369acdfee7b4a9e89c5ec11307ae52, type: 3}
+  - id: placeholder
+    sprite: {fileID: -6674868978544099146, guid: da678132a0dd8445f971e622628b5883, type: 3}
