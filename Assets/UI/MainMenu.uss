@@ -1,0 +1,85 @@
+:root {
+    /* Concrete */
+    --bg: rgb(34, 34, 33);
+    --panel-bg: rgb(62, 62, 60);
+    --slab: rgb(16, 16, 16);
+    --text: rgb(226, 226, 220);
+    --text-dim: rgb(146, 146, 140);
+    --button-bg: rgb(88, 88, 85);
+    --button-hover: rgb(110, 110, 106);
+
+    /* Moss */
+    --accent: rgb(132, 178, 78);
+    --accent-deep: rgb(58, 88, 38);
+}
+
+.main-menu {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg);
+}
+
+.main-menu__panel {
+    width: 720px;
+    padding: 32px;
+    background-color: var(--panel-bg);
+    border-color: var(--slab);
+    border-width: 4px 12px 12px 4px;
+    border-radius: 0;
+}
+
+.main-menu .main-menu__title {
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    font-size: 48px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    letter-spacing: 6px;
+    color: var(--accent);
+    border-bottom-width: 4px;
+    border-color: var(--accent-deep);
+}
+
+.main-menu__button {
+    height: 52px;
+    margin: 6px 0;
+    font-size: 22px;
+    -unity-font-style: bold;
+    letter-spacing: 2px;
+    color: var(--text);
+    background-color: var(--button-bg);
+    border-color: var(--slab);
+    border-width: 2px 5px 5px 2px;
+    border-radius: 0;
+}
+
+.main-menu__button:hover {
+    color: var(--slab);
+    background-color: var(--accent);
+}
+
+.main-menu__button:active {
+    translate: 3px 3px;
+    color: var(--text);
+    background-color: var(--accent-deep);
+}
+
+.main-menu__button:disabled {
+    opacity: 0.3;
+}
+
+.bot-select {
+    width: 320px;
+}
+
+.bot-select__colors {
+    flex-direction: row;
+    margin-bottom: 8px;
+}
+
+.bot-select__colors .bot-select__color {
+    flex-grow: 1;
+    flex-basis: 0;
+    margin: 0 3px;
+}
