@@ -51,6 +51,7 @@ namespace Views.UI
         private DecisionWindow decision  = null!;
         private Window         gameOver  = null!;
         private Label          gameOverLabel = null!;
+        private Button         newGameButton = null!;
 
         private void Start()
         {
@@ -73,8 +74,9 @@ namespace Views.UI
             BuildRightPanel();
             BuildWindows();
 
-            controller.Changed   += Refresh;
-            controller.Announced += ShowToast;
+            controller.Changed      += Refresh;
+            controller.Announced    += ShowToast;
+            controller.OpponentLost += ReturnToMenu;
             controller.SetPointerFilter(IsPointerOverUI);
 
             Refresh();
@@ -84,8 +86,9 @@ namespace Views.UI
         {
             if (controller == null) return;
 
-            controller.Changed   -= Refresh;
-            controller.Announced -= ShowToast;
+            controller.Changed      -= Refresh;
+            controller.Announced    -= ShowToast;
+            controller.OpponentLost -= ReturnToMenu;
         }
 
         private void LateUpdate() => PositionPanels();
@@ -116,7 +119,15 @@ namespace Views.UI
                 boardButtons[type] = AddButton(leftPanel, type.ToString(), () => controller.ShowBoard(type));
 
             AddHeader(leftPanel, "Menu");
-            AddButton(leftPanel, "Quit", () => SceneManager.LoadScene(menuScene));
+            AddButton(leftPanel, "Quit", () => ReturnToMenu(null));
+        }
+
+        /// <param name="notice">Shown in the menu.</param>
+        private void ReturnToMenu(string? notice)
+        {
+            MatchSetup.SetNotice(notice);
+
+            SceneManager.LoadScene(menuScene);
         }
 
         private void BuildRightPanel()
@@ -175,9 +186,9 @@ namespace Views.UI
             gameOverLabel.AddToClassList("game-over__label");
             gameOver.GetContent().Add(gameOverLabel);
 
-            Button newGame = new(controller.NewGame) { text = "New game" };
-            newGame.AddToClassList("hud-button");
-            gameOver.GetContent().Add(newGame);
+            newGameButton = new Button(controller.NewGame) { text = "New game" };
+            newGameButton.AddToClassList("hud-button");
+            gameOver.GetContent().Add(newGameButton);
         }
 
         private VisualElement CreatePanel(string className)
@@ -266,6 +277,9 @@ namespace Views.UI
 
             if (state.GetDecision() is Decision pending) return $"Waiting for {pending.GetPlayer()}: {pending.GetTitle()}";
 
+            if (controller.IsOnline() && !controller.IsLocallyControlled(state.GetTurn()))
+                return $"Waiting for {state.GetTurn()}...";
+
             return controller.GetMode() switch
             {
                 GameController.Mode.Buy     => $"Placing {UISprites.FormatName(item!)}. Click a highlighted square.",
@@ -309,6 +323,9 @@ namespace Views.UI
             }
 
             gameOverLabel.text = GetResultText(state);
+
+            newGameButton.SetEnabled(controller.CanStartNewGame());
+            newGameButton.text = controller.CanStartNewGame() ? "New game" : "Waiting for host";
 
             gameOver.Open(windowLayer, GetBoardTopLeft() + new Vector2(80, 120));
         }

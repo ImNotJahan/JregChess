@@ -7,6 +7,7 @@ using Boards;
 using Gameplay;
 using Gameplay.Commands;
 using Gameplay.Decisions;
+using Networking;
 using Pieces;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -37,6 +38,10 @@ namespace Views
         /// </summary>
         public event Action?               Changed;
         public event Action<Announcement>? Announced;
+        /// <summary>
+        /// The online opponent is gone, with the reason.
+        /// </summary>
+        public event Action<string>?       OpponentLost;
 
         [SerializeField] private BoardView boardView   = null!;
         [SerializeField] private Camera    inputCamera = null!;
@@ -70,25 +75,40 @@ namespace Views
         private Task<GameCommand?>?      botTask;
         private CancellationTokenSource? botCancellation;
 
+        private OnlineSession? online;
+
         private void Awake()
         {
             if (inputCamera == null) inputCamera = Camera.main!;
 
             bot      = MatchSetup.GetBot();
             botColor = MatchSetup.GetBotColor();
+            online   = MatchSetup.GetOnline();
 
             LoadState(GameState.CreateNew());
+
+            if (online == null) return;
+
+            online.Disconnected += OnDisconnected;
+
+            ReceiveOnline();
         }
 
         private void OnDestroy()
         {
             CancelBot();
             Unsubscribe();
+
+            if (online == null) return;
+
+            online.Disconnected -= OnDisconnected;
+            online.Leave();
         }
 
         private void Update()
         {
             RunBot();
+            ReceiveOnline();
 
             if (Keyboard.current?.escapeKey.wasPressedThisFrame == true ||
                 Mouse.current?.rightButton.wasPressedThisFrame == true)
@@ -113,6 +133,12 @@ namespace Views
         public Mode      GetMode       () => mode;
         public string?   GetModeItem   () => modeItem;
         public Bot?      GetBot        () => bot;
+        public bool      IsOnline      () => online != null;
+
+        /// <summary>
+        /// Online, only the host can.
+        /// </summary>
+        public bool CanStartNewGame() => online == null || online.IsHost();
 
         /// <summary>
         /// Whoever has to act next: the player making the pending decision, or else
@@ -123,8 +149,13 @@ namespace Views
         /// <summary>
         /// Whether this client's input acts for <paramref name="color"/>.
         /// </summary>
-        public bool IsLocallyControlled(Piece.Color color) =>
-            color != Piece.Color.NPC && (bot == null || color != botColor);
+        public bool IsLocallyControlled(Piece.Color color)
+        {
+            if (color == Piece.Color.NPC) return false;
+            if (online != null)           return color == online.GetLocalColor();
+
+            return bot == null || color != botColor;
+        }
 
         /// <summary>
         /// Clicks for which this returns true are ignored.
@@ -149,7 +180,16 @@ namespace Views
             SyncWithState();
         }
 
-        public void NewGame() => LoadState(GameState.CreateNew());
+        /// <summary>
+        /// Online, the new game arrives as a message.
+        /// </summary>
+        public void NewGame()
+        {
+            if (!CanStartNewGame()) return;
+
+            if (online != null) online.StartNewGame();
+            else                LoadState(GameState.CreateNew());
+        }
 
         /// <summary>
         /// Only changes this client's view, not the game.
@@ -192,7 +232,39 @@ namespace Views
                    Submit(new ResolveDecisionCommand(decision.GetPlayer(), option));
         }
 
-        private bool Submit(GameCommand command) => state.Execute(command);
+        /// <summary>
+        /// For commands made on this client.
+        /// </summary>
+        private bool Submit(GameCommand command)
+        {
+            if (online != null && command.GetPlayer() != online.GetLocalColor()) return false;
+
+            if (!state.Execute(command)) return false;
+
+            if (online != null) online.SendCommand(command);
+
+            return true;
+        }
+
+        private void ReceiveOnline()
+        {
+            if (online == null) return;
+
+            while (online.TryReceive(out OnlineSession.Message message))
+            {
+                if (message.Seed is ulong seed)
+                {
+                    LoadState(GameState.CreateNew(seed));
+                }
+                else if (message.Command is GameCommand command &&
+                         (command.GetPlayer() == online.GetLocalColor() || !state.Execute(command)))
+                {
+                    Debug.LogWarning($"Opponent's {command.GetId()} command was invalid here, so the games are out of sync");
+                }
+            }
+        }
+
+        private void OnDisconnected(string reason) => OpponentLost?.Invoke(reason);
 
         private void RunBot()
         {

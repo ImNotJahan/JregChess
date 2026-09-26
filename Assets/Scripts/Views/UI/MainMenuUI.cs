@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using AI;
+using Networking;
 using Pieces;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,6 +28,21 @@ namespace Views.UI
         private Window        botWindow   = null!;
         private Piece.Color   botColor    = Piece.Color.Black;
 
+        private Window    onlineWindow = null!;
+        private Window    hostWindow   = null!;
+        private Label     hostCode     = null!;
+        private Button    copyButton   = null!;
+        private Label     hostStatus   = null!;
+        private Window    joinWindow   = null!;
+        private TextField codeField    = null!;
+        private Button    joinButton   = null!;
+        private Label     joinStatus   = null!;
+
+        /// <summary>
+        /// The session whose start is being waited for.
+        /// </summary>
+        private OnlineSession? session;
+
         private void Start()
         {
             VisualElement root = GetComponent<UIDocument>().rootVisualElement;
@@ -47,7 +64,7 @@ namespace Views.UI
 
             AddButton(menu, "Play bots",   OpenBotWindow);
             AddButton(menu, "Play local",  PlayLocal);
-            AddButton(menu, "Play online", null);
+            AddButton(menu, "Play online", OpenOnlineWindow);
             AddButton(menu, "Settings",    null);
             AddButton(menu, "Exit",        Exit);
 
@@ -56,10 +73,36 @@ namespace Views.UI
             root.Add(windowLayer);
 
             BuildBotWindow();
+            BuildOnlineWindows();
+
+            if (MatchSetup.TakeNotice() is string notice) ShowNotice(notice);
         }
 
+        /// <summary>
+        /// Opens once the menu has been laid out, so it can go beside it.
+        /// </summary>
+        private void ShowNotice(string text)
+        {
+            Window window = new("Game ended");
+            window.AddToClassList("online");
+
+            AddHint(window.GetContent(), text);
+            AddWindowButton(window.GetContent(), "OK", window.Close);
+
+            void Open(GeometryChangedEvent evt)
+            {
+                menu.UnregisterCallback<GeometryChangedEvent>(Open);
+
+                OpenBesideMenu(window);
+            }
+
+            menu.RegisterCallback<GeometryChangedEvent>(Open);
+        }
+
+        private void OnDestroy() => Unwatch();
+
         /// <param name="onClick">Null disables the button.</param>
-        private static void AddButton(VisualElement parent, string text, System.Action? onClick)
+        private static void AddButton(VisualElement parent, string text, Action? onClick)
         {
             Button button = new(onClick) { text = text };
             button.AddToClassList("main-menu__button");
@@ -137,11 +180,64 @@ namespace Views.UI
             SetBotColor(botColor);
         }
 
-        private static void AddHint(VisualElement parent, string text)
+        private void BuildOnlineWindows()
+        {
+            onlineWindow = new Window("Play online");
+            onlineWindow.AddToClassList("online");
+
+            AddWindowButton(onlineWindow.GetContent(), "Host game", HostGame);
+            AddWindowButton(onlineWindow.GetContent(), "Join game", OpenJoinWindow);
+
+            hostWindow = new Window("Host game");
+            hostWindow.AddToClassList("online");
+            hostWindow.Closed += OnlineSession.LeaveCurrent;
+
+            AddHint(hostWindow.GetContent(), "Code");
+
+            hostCode = new Label();
+            hostCode.AddToClassList("online__code");
+            hostCode.selection.isSelectable = true;
+            hostWindow.GetContent().Add(hostCode);
+
+            copyButton = AddWindowButton(hostWindow.GetContent(), "Copy code", () => GUIUtility.systemCopyBuffer = hostCode.text);
+
+            hostStatus = AddHint(hostWindow.GetContent(), "");
+
+            joinWindow = new Window("Join game");
+            joinWindow.AddToClassList("online");
+            joinWindow.Closed += OnlineSession.LeaveCurrent;
+
+            AddHint(joinWindow.GetContent(), "Code");
+
+            codeField = new TextField { maxLength = 16 };
+            codeField.AddToClassList("online__code-field");
+            codeField.RegisterCallback<KeyDownEvent>(evt =>
+            {
+                if (evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter) JoinGame();
+            }, TrickleDown.TrickleDown);
+            joinWindow.GetContent().Add(codeField);
+
+            joinButton = AddWindowButton(joinWindow.GetContent(), "Join", JoinGame);
+
+            joinStatus = AddHint(joinWindow.GetContent(), "");
+        }
+
+        private static Button AddWindowButton(VisualElement parent, string text, Action onClick)
+        {
+            Button button = new(onClick) { text = text };
+            button.AddToClassList("hud-button");
+            parent.Add(button);
+
+            return button;
+        }
+
+        private static Label AddHint(VisualElement parent, string text)
         {
             Label hint = new(text);
             hint.AddToClassList("window__hint");
             parent.Add(hint);
+
+            return hint;
         }
 
         private void SetBotColor(Piece.Color color)
@@ -152,15 +248,140 @@ namespace Views.UI
                 button.EnableInClassList("hud-button--active", buttonColor == color);
         }
 
-        private void OpenBotWindow()
+        private void OpenBotWindow() => OpenBesideMenu(botWindow);
+
+        private void OpenBesideMenu(Window window)
         {
             Rect bounds = windowLayer.WorldToLocal(menu.worldBound);
 
-            botWindow.Open(windowLayer, new Vector2(bounds.xMax + 16, bounds.yMin));
+            window.Open(windowLayer, new Vector2(bounds.xMax + 16, bounds.yMin));
+        }
+
+        private void OpenOnlineWindow() => OpenBesideMenu(onlineWindow);
+
+        /// <summary>
+        /// Swaps the online window for <paramref name="window"/>, leaving any session
+        /// the other windows had open.
+        /// </summary>
+        private void OpenOnlineStep(Window window)
+        {
+            onlineWindow.Close();
+            hostWindow  .Close();
+            joinWindow  .Close();
+
+            OpenBesideMenu(window);
+        }
+
+        private async void HostGame()
+        {
+            OpenOnlineStep(hostWindow);
+
+            hostCode.text = "...";
+            copyButton.SetEnabled(false);
+            hostStatus.text = "Creating game...";
+
+            try
+            {
+                OnlineSession hosted = await OnlineSession.Host();
+
+                hostCode.text = hosted.GetJoinCode();
+                copyButton.SetEnabled(true);
+                hostStatus.text = "Waiting for an opponent to join...";
+
+                Watch(hosted);
+            }
+            catch (OperationCanceledException) {}
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+
+                hostCode.text   = "";
+                hostStatus.text = $"Couldn't host: {e.Message}";
+            }
+        }
+
+        private void OpenJoinWindow()
+        {
+            OpenOnlineStep(joinWindow);
+
+            joinButton.SetEnabled(true);
+            joinStatus.text = "";
+
+            codeField.Focus();
+        }
+
+        private async void JoinGame()
+        {
+            string code = codeField.value.Trim().ToUpperInvariant();
+
+            if (code.Length == 0 || !joinButton.enabledSelf) return;
+
+            joinButton.SetEnabled(false);
+            joinStatus.text = "Joining...";
+
+            try
+            {
+                OnlineSession joined = await OnlineSession.Join(code);
+
+                joinStatus.text = "Connecting...";
+
+                Watch(joined);
+            }
+            catch (OperationCanceledException) {}
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+
+                joinButton.SetEnabled(true);
+                joinStatus.text = $"Couldn't join: {e.Message}";
+            }
+        }
+
+        private void Watch(OnlineSession watched)
+        {
+            Unwatch();
+
+            session = watched;
+            session.Started      += OnSessionStarted;
+            session.Disconnected += OnSessionDisconnected;
+
+            if (session.HasStarted()) OnSessionStarted();
+        }
+
+        private void Unwatch()
+        {
+            if (session == null) return;
+
+            session.Started      -= OnSessionStarted;
+            session.Disconnected -= OnSessionDisconnected;
+            session = null;
+        }
+
+        private void OnSessionStarted()
+        {
+            if (session == null) return;
+
+            MatchSetup.SetOnline(session);
+
+            Unwatch();
+
+            SceneManager.LoadScene(gameScene);
+        }
+
+        private void OnSessionDisconnected(string reason)
+        {
+            Unwatch();
+
+            OnlineSession.LeaveCurrent();
+
+            hostStatus.text = reason;
+            joinStatus.text = reason;
+            joinButton.SetEnabled(true);
         }
 
         private void PlayLocal()
         {
+            OnlineSession.LeaveCurrent();
             MatchSetup.SetLocal();
 
             SceneManager.LoadScene(gameScene);
@@ -168,6 +389,7 @@ namespace Views.UI
 
         private void PlayBot(Bot bot)
         {
+            OnlineSession.LeaveCurrent();
             MatchSetup.SetBot(bot, botColor);
 
             SceneManager.LoadScene(gameScene);

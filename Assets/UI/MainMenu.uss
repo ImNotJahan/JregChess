@@ -120,3 +120,38 @@
 .bot-select__depth-field:focus .unity-base-text-field__input {
     border-color: var(--accent);
 }
+
+.online {
+    width: 320px;
+}
+
+.online .online__code {
+    margin: 0 0 8px 0;
+    font-size: 36px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    letter-spacing: 6px;
+    color: var(--accent);
+}
+
+.online__code-field {
+    margin: 0 0 8px 0;
+}
+
+.online__code-field .unity-base-text-field__input {
+    height: 40px;
+    padding: 0 6px;
+    font-size: 24px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    letter-spacing: 4px;
+    color: var(--text);
+    background-color: var(--button-bg);
+    border-color: var(--slab);
+    border-width: 2px 4px 4px 2px;
+    border-radius: 0;
+}
+
+.online__code-field:focus .unity-base-text-field__input {
+    border-color: var(--accent);
+}
