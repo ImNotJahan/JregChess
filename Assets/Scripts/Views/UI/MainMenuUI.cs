@@ -17,6 +17,8 @@ namespace Views.UI
         [SerializeField] private StyleSheet windowStyleSheet = null!;
         [SerializeField] private string     gameScene        = "Game";
 
+        private const int SliderMaxDepth = 3;
+
         private readonly Dictionary<Piece.Color, Button> colorButtons = new();
 
         private VisualElement menu        = null!;
@@ -88,6 +90,40 @@ namespace Views.UI
 
                 colorButtons[color] = button;
             }
+
+            AddHint(content, "Depth");
+
+            VisualElement depthRow = new();
+            depthRow.AddToClassList("bot-select__depth");
+            content.Add(depthRow);
+
+            SliderInt depthSlider = new(HeuristicBot.MinDepth, SliderMaxDepth)
+            {
+                value = Mathf.Min(MatchSetup.GetBotDepth(), SliderMaxDepth)
+            };
+            depthSlider.AddToClassList("bot-select__depth-slider");
+            depthRow.Add(depthSlider);
+
+            IntegerField depthField = new() { value = MatchSetup.GetBotDepth() };
+            depthField.AddToClassList("bot-select__depth-field");
+            depthRow.Add(depthField);
+
+            depthSlider.RegisterValueChangedCallback(change =>
+            {
+                MatchSetup.SetBotDepth(change.newValue);
+                depthField.SetValueWithoutNotify(change.newValue);
+            });
+
+            depthField.RegisterValueChangedCallback(change =>
+            {
+                int depth = Mathf.Max(HeuristicBot.MinDepth, change.newValue);
+
+                MatchSetup.SetBotDepth(depth);
+                depthField.SetValueWithoutNotify(depth);
+                depthSlider.SetValueWithoutNotify(Mathf.Min(depth, SliderMaxDepth));
+            });
+
+            AddHint(content, "Higher depth = a stronger, and laggier, bot");
 
             AddHint(content, "Bot");
 

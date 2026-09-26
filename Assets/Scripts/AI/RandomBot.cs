@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Gameplay;
 using Gameplay.Commands;
 using Pieces;
@@ -17,7 +18,7 @@ namespace AI
 
         public override string GetName() => "Randy";
 
-        public override GameCommand? HandleTurn(GameState state, Piece.Color player)
+        public override GameCommand? HandleTurn(GameState state, Piece.Color player, CancellationToken cancellation = default)
         {
             List<ResolveDecisionCommand> choices = GetDecisionChoices(state, player);
 

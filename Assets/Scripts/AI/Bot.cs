@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Gameplay;
 using Gameplay.Commands;
 using Pieces;
@@ -11,7 +12,7 @@ namespace AI
     {
         public abstract string GetName();
 
-        public abstract GameCommand? HandleTurn(GameState state, Piece.Color player);
+        public abstract GameCommand? HandleTurn(GameState state, Piece.Color player, CancellationToken cancellation = default);
 
         protected static List<MoveCommand> GetMoves(GameState state, Piece.Color player) =>
             Actions.GetMoves(state, player);

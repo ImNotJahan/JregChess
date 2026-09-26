@@ -4,6 +4,7 @@ using Gameplay;
 using Gameplay.Decisions;
 using Pieces;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace Views.UI
@@ -22,6 +23,7 @@ namespace Views.UI
         [SerializeField] private PieceSpriteLibrary pieces     = null!;
         [SerializeField] private IconLibrary        icons      = null!;
         [SerializeField] private StyleSheet         styleSheet = null!;
+        [SerializeField] private string             menuScene  = "MainMenu";
 
         [Tooltip("Gap between the board and the side panels, in panel pixels")]
         [SerializeField] private float panelGap      = 16;
@@ -112,6 +114,9 @@ namespace Views.UI
 
             foreach (BoardType type in new[] { BoardType.Normal, BoardType.Heaven, BoardType.Hell })
                 boardButtons[type] = AddButton(leftPanel, type.ToString(), () => controller.ShowBoard(type));
+
+            AddHeader(leftPanel, "Menu");
+            AddButton(leftPanel, "Quit", () => SceneManager.LoadScene(menuScene));
         }
 
         private void BuildRightPanel()

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Boards;
 using Gameplay;
 using Gameplay.Commands;
@@ -16,9 +17,21 @@ namespace AI
         // just a big number (bigger than our win score)
         private const int INFINITY = 100_000;
 
-        protected int depthLimit = 2;
+        public const int MinDepth     = 0;
+        public const int DefaultDepth = 1;
 
-        public override GameCommand? HandleTurn(GameState state, Piece.Color player) => FindBestMove(state, player).bestMove;
+        protected int depthLimit = DefaultDepth;
+
+        private CancellationToken cancellation;
+
+        public void SetDepthLimit(int depth) => depthLimit = System.Math.Max(depth, MinDepth);
+
+        public override GameCommand? HandleTurn(GameState state, Piece.Color player, CancellationToken cancellation = default)
+        {
+            this.cancellation = cancellation;
+
+            return FindBestMove(state, player).bestMove;
+        }
 
         private (GameCommand? bestMove, int bestMoveScore) FindBestMove(
             GameState   state, 
@@ -29,13 +42,15 @@ namespace AI
             int         beta  = INFINITY   // best score optimal opponent will allow
         )
         {
-            if (depth == depthLimit || state.IsOver()) return (null, ScoreTerminal(state, player, depth));
+            if (depth > depthLimit || state.IsOver()) return (null, ScoreTerminal(state, player, depth));
 
             int          bestMoveScore = 0;
             GameCommand? bestMove      = null;
 
             foreach (GameCommand command in GetCandidates(state, player, ply))
             {
+                cancellation.ThrowIfCancellationRequested();
+
                 // TODO it can see the future....
                 GameState? newState = state.ExecuteOnCopy(command);
 
@@ -101,7 +116,7 @@ namespace AI
 
         protected virtual int ScoreTerminal(GameState state, Piece.Color player, int depth)
         {
-            if (state.GetWinner() is Piece.Color winner) return (1000 + (depthLimit - depth)) 
+            if (state.GetWinner() is Piece.Color winner) return (1000 + (depthLimit + 1 - depth)) 
                                                               * (winner == player ? 1 : -1);
 
             if (state.IsOver()) return 0;

@@ -83,3 +83,40 @@
     flex-basis: 0;
     margin: 0 3px;
 }
+
+.bot-select__depth {
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 4px 0;
+}
+
+.bot-select__depth-slider {
+    flex-grow: 1;
+    margin: 0 8px 0 0;
+}
+
+.bot-select__depth-slider .unity-base-field__input {
+    min-width: 0;
+}
+
+.bot-select__depth-field {
+    width: 52px;
+    margin: 0;
+}
+
+.bot-select__depth-field .unity-base-text-field__input {
+    height: 28px;
+    padding: 0 6px;
+    font-size: 16px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: var(--text);
+    background-color: var(--button-bg);
+    border-color: var(--slab);
+    border-width: 2px 4px 4px 2px;
+    border-radius: 0;
+}
+
+.bot-select__depth-field:focus .unity-base-text-field__input {
+    border-color: var(--accent);
+}

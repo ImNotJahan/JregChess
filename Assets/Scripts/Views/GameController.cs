@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using AI;
 using Boards;
 using Gameplay;
@@ -65,6 +67,9 @@ namespace Views
         /// </summary>
         private bool        botStuck;
 
+        private Task<GameCommand?>?      botTask;
+        private CancellationTokenSource? botCancellation;
+
         private void Awake()
         {
             if (inputCamera == null) inputCamera = Camera.main!;
@@ -75,7 +80,11 @@ namespace Views
             LoadState(GameState.CreateNew());
         }
 
-        private void OnDestroy() => Unsubscribe();
+        private void OnDestroy()
+        {
+            CancelBot();
+            Unsubscribe();
+        }
 
         private void Update()
         {
@@ -124,6 +133,7 @@ namespace Views
 
         public void LoadState(GameState newState)
         {
+            CancelBot();
             Unsubscribe();
 
             state = newState;
@@ -186,18 +196,54 @@ namespace Views
 
         private void RunBot()
         {
-            if (bot == null || botStuck || state.IsOver()) return;
+            if (bot == null) return;
+
+            if (botTask != null)
+            {
+                if (botTask.IsCompleted) FinishBotTurn();
+
+                return;
+            }
+
+            if (botStuck || state.IsOver()) return;
             if (GetActingPlayer() != botColor || Time.time < botReadyTime) return;
 
-            GameCommand? command = bot.HandleTurn(state, botColor);
+            Bot         thinker  = bot;
+            Piece.Color color    = botColor;
+            GameState   snapshot = state.Clone();
+
+            botCancellation = new CancellationTokenSource();
+            CancellationToken token = botCancellation.Token;
+
+            botTask = Task.Run(() => thinker.HandleTurn(snapshot, color, token), token);
+        }
+
+        private void FinishBotTurn()
+        {
+            Task<GameCommand?> task = botTask!;
+
+            botTask = null;
+            botCancellation?.Dispose();
+            botCancellation = null;
+
+            if (task.IsFaulted) Debug.LogException(task.Exception!.GetBaseException());
+
+            GameCommand? command = task.IsCompletedSuccessfully ? task.Result : null;
 
             if (command != null && Submit(command)) return;
 
             botStuck = true;
 
             Debug.LogWarning(command == null
-                ? $"{bot.GetName()} bot has nothing to do"
-                : $"{bot.GetName()} bot gave an invalid {command.GetId()} command");
+                ? $"{bot!.GetName()} bot has nothing to do"
+                : $"{bot!.GetName()} bot gave an invalid {command.GetId()} command");
+        }
+
+        private void CancelBot()
+        {
+            botCancellation?.Cancel();
+            botCancellation = null;
+            botTask         = null;
         }
 
         private void SetMode(Mode newMode, string? item, BoardType? board)
