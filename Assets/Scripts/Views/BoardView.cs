@@ -44,6 +44,10 @@ namespace Views
         [Header("Effects")]
         [SerializeField] private float explosionDuration = 0.6f;
 
+        [Header("Sounds")]
+        [SerializeField] private AudioClip? moveSound;
+        [SerializeField] private AudioClip? explosionSound;
+
         private readonly Dictionary<Piece, PieceView> pieceViews = new();
 
         private Board?            board;
@@ -51,6 +55,11 @@ namespace Views
         private Highlight[,]      highlights = new Highlight[0, 0];
         private Transform?        tileRoot;
         private Transform?        pieceRoot;
+        private AudioSource?      audioSource;
+        /// <summary>
+        /// So pieces moving together, such as NPCs, make one sound.
+        /// </summary>
+        private int               lastMoveSoundFrame = -1;
 
         private Transform TileRoot  => tileRoot  ??= CreateChild("Tiles");
         private Transform PieceRoot => pieceRoot ??= CreateChild("Pieces");
@@ -225,16 +234,40 @@ namespace Views
 
         private void OnPieceMoved(Piece piece, Position from)
         {
-            if (pieceViews.TryGetValue(piece, out PieceView? view)) PlacePiece(view, true);
+            if (!pieceViews.TryGetValue(piece, out PieceView? view)) return;
+
+            PlacePiece(view, true);
+
+            if (lastMoveSoundFrame == Time.frameCount) return;
+
+            lastMoveSoundFrame = Time.frameCount;
+
+            PlaySound(moveSound);
         }
 
         private void OnExploded(Position center)
         {
+            PlaySound(explosionSound);
+
             Sprite? explosion = icons.GetIcon("explosion");
 
             if (explosion == null) return;
 
             FadeEffect.Create(explosion, PieceRoot, GetLocalCenter(center, 1, 1), 3 * tileSize, explosionDuration, 50);
+        }
+
+        private void PlaySound(AudioClip? clip)
+        {
+            if (clip == null) return;
+
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource.playOnAwake  = false;
+                audioSource.spatialBlend = 0;
+            }
+
+            audioSource.PlayOneShot(clip, GameSettings.GetSfxVolume());
         }
 
         private void PlacePiece(PieceView view, bool animate = false)

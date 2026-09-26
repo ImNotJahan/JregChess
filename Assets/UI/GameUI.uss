@@ -494,3 +494,47 @@
     font-size: 14px;
     white-space: normal;
 }
+
+/* Settings */
+
+.settings {
+    width: 300px;
+}
+
+.settings__row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.settings__slider {
+    flex-grow: 1;
+    margin: 0 8px 0 0;
+}
+
+.settings__slider .unity-base-field__input {
+    min-width: 0;
+}
+
+.settings__value {
+    width: 48px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-right;
+}
+
+.settings__toggle {
+    margin: 0;
+}
+
+.settings__toggle .unity-toggle__checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: var(--button-bg);
+    border-color: var(--slab);
+    border-width: 2px 3px 3px 2px;
+    border-radius: 0;
+}
+
+.settings__toggle:checked .unity-toggle__checkmark {
+    background-color: var(--accent);
+}

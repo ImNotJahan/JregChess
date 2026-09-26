@@ -289,6 +289,8 @@ MonoBehaviour:
   captureColor: {r: 0.95, g: 0.2, b: 0.2, a: 1}
   highlightStrength: 0.6
   explosionDuration: 0.6
+  moveSound: {fileID: 8300000, guid: fc596ef83704e4096b933e8fec5cc350, type: 3}
+  explosionSound: {fileID: 8300000, guid: 6d19066b5520f472493517830c8e8e92, type: 3}
 --- !u!1 &520000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardView: {fileID: 510000003}
   inputCamera: {fileID: 143136534}
+  botDelay: 0.5
 --- !u!1 &1434112036
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,6 +374,7 @@ MonoBehaviour:
   pieces: {fileID: 11400000, guid: ff2d8f3091cc471389a6fee5b06e237f, type: 2}
   icons: {fileID: 11400000, guid: 8fc503ffd05f04d11af83d36e2339d53, type: 2}
   styleSheet: {fileID: 7433441132597879392, guid: 91113c3419441477ea94a192c018dcfe, type: 3}
+  menuScene: MainMenu
   panelGap: 16
   toastDuration: 3
 --- !u!114 &1434112038

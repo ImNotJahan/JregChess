@@ -48,6 +48,7 @@ namespace Views.UI
         private ShopWindow     shop      = null!;
         private UpgradeWindow  upgrades  = null!;
         private RulesWindow    rules     = null!;
+        private SettingsWindow settings  = null!;
         private DecisionWindow decision  = null!;
         private Window         gameOver  = null!;
         private Label          gameOverLabel = null!;
@@ -119,7 +120,8 @@ namespace Views.UI
                 boardButtons[type] = AddButton(leftPanel, type.ToString(), () => controller.ShowBoard(type));
 
             AddHeader(leftPanel, "Menu");
-            AddButton(leftPanel, "Quit", () => ReturnToMenu(null));
+            AddButton(leftPanel, "Settings", ToggleSettings);
+            AddButton(leftPanel, "Quit",     () => ReturnToMenu(null));
         }
 
         /// <param name="notice">Shown in the menu.</param>
@@ -178,6 +180,7 @@ namespace Views.UI
             upgrades = new UpgradeWindow(controller, sprites, tooltip);
             rules    = new RulesWindow(controller, sprites);
             decision = new DecisionWindow(controller, sprites);
+            settings = new SettingsWindow();
 
             gameOver = new Window("Game over", false);
             gameOver.AddToClassList("game-over");
@@ -226,6 +229,13 @@ namespace Views.UI
             window.Toggle(windowLayer, GetBoardTopLeft() + new Vector2(24, 24) + offset);
 
             Refresh();
+        }
+
+        private void ToggleSettings()
+        {
+            settings.Refresh();
+
+            ToggleWindow(settings, new Vector2(90, 90));
         }
 
         private void Refresh()

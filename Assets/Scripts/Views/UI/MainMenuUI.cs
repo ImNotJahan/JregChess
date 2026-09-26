@@ -38,6 +38,8 @@ namespace Views.UI
         private Button    joinButton   = null!;
         private Label     joinStatus   = null!;
 
+        private SettingsWindow settingsWindow = null!;
+
         /// <summary>
         /// The session whose start is being waited for.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Views.UI
             AddButton(menu, "Play bots",   OpenBotWindow);
             AddButton(menu, "Play local",  PlayLocal);
             AddButton(menu, "Play online", OpenOnlineWindow);
-            AddButton(menu, "Settings",    null);
+            AddButton(menu, "Settings",    OpenSettingsWindow);
             AddButton(menu, "Exit",        Exit);
 
             windowLayer = new VisualElement { pickingMode = PickingMode.Ignore };
@@ -74,6 +76,8 @@ namespace Views.UI
 
             BuildBotWindow();
             BuildOnlineWindows();
+
+            settingsWindow = new SettingsWindow();
 
             if (MatchSetup.TakeNotice() is string notice) ShowNotice(notice);
         }
@@ -258,6 +262,13 @@ namespace Views.UI
         }
 
         private void OpenOnlineWindow() => OpenBesideMenu(onlineWindow);
+
+        private void OpenSettingsWindow()
+        {
+            settingsWindow.Refresh();
+
+            OpenBesideMenu(settingsWindow);
+        }
 
         /// <summary>
         /// Swaps the online window for <paramref name="window"/>, leaving any session
