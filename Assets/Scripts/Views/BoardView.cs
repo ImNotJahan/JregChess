@@ -225,7 +225,7 @@ namespace Views
 
         private void OnPieceMoved(Piece piece, Position from)
         {
-            if (pieceViews.TryGetValue(piece, out PieceView? view)) PlacePiece(view);
+            if (pieceViews.TryGetValue(piece, out PieceView? view)) PlacePiece(view, true);
         }
 
         private void OnExploded(Position center)
@@ -237,13 +237,14 @@ namespace Views
             FadeEffect.Create(explosion, PieceRoot, GetLocalCenter(center, 1, 1), 3 * tileSize, explosionDuration, 50);
         }
 
-        private void PlacePiece(PieceView view)
+        private void PlacePiece(PieceView view, bool animate = false)
         {
             Piece piece = view.GetPiece();
 
             view.Place(
                 GetLocalCenter(piece.GetPosition(), piece.GetWidth(), piece.GetHeight()),
-                tileSize
+                tileSize,
+                animate
             );
         }
 

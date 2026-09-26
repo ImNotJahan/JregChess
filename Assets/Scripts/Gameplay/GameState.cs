@@ -36,6 +36,7 @@ namespace Gameplay
         private Piece.Color  turn   = Piece.Color.White;
         private int          turnNumber;
         private int          turnsSinceNewRule;
+        private Piece.Color  ruleChooser = Piece.Color.White;
         private Piece.Color? winner;
         private GameResult   result;
 
@@ -275,6 +276,7 @@ namespace Gameplay
                 turn              = turn,
                 turnNumber        = turnNumber,
                 turnsSinceNewRule = turnsSinceNewRule,
+                ruleChooser       = ruleChooser,
                 winner            = winner,
                 result            = result
             };
@@ -310,7 +312,9 @@ namespace Gameplay
             {
                 turnsSinceNewRule = 0;
 
-                PushDecision(new RuleDecision(turn));
+                PushDecision(new RuleDecision(ruleChooser));
+
+                ruleChooser = GetOpponent(ruleChooser);
             }
 
             TurnChanged?.Invoke(turn);
@@ -356,6 +360,7 @@ namespace Gameplay
                 ["turn"]              = turn.ToString(),
                 ["turnNumber"]        = turnNumber,
                 ["turnsSinceNewRule"] = turnsSinceNewRule,
+                ["ruleChooser"]       = ruleChooser.ToString(),
                 ["winner"]            = winner?.ToString(),
                 ["result"]            = result.ToString(),
                 ["random"]            = random.GetState().ToString(),
@@ -388,6 +393,7 @@ namespace Gameplay
                 turn              = Enum.Parse<Piece.Color>(token.Value<string>("turn")!),
                 turnNumber        = token.Value<int>("turnNumber"),
                 turnsSinceNewRule = token.Value<int>("turnsSinceNewRule"),
+                ruleChooser       = Enum.Parse<Piece.Color>(token.Value<string>("ruleChooser")!),
                 winner            = winnerName == null ? null : Enum.Parse<Piece.Color>(winnerName),
                 result            = resultName != null ? Enum.Parse<GameResult>(resultName)
                                   : winnerName != null ? GameResult.Win

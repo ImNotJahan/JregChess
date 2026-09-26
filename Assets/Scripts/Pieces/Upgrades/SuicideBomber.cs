@@ -12,6 +12,8 @@ namespace Pieces.Upgrades
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Goes boom on death";
+
         public override BoardType? GetAfterlife() => BoardType.Heaven;
 
         /// <summary>

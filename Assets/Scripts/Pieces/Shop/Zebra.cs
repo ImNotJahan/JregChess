@@ -14,6 +14,8 @@ namespace Pieces.Shop
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Like a horse, but more violent";
+
         /// <summary>
         /// Captures the two pieces along the long side of its move, including its
         /// own.

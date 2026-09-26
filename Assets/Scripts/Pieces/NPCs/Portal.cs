@@ -22,6 +22,8 @@ namespace Pieces.NPCs
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Takes you to the other side";
+
         /// <summary>
         /// Sends the killer to the same square on another board.
         /// </summary>

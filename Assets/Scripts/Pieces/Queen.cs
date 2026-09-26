@@ -11,6 +11,8 @@ namespace Pieces
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Who's really in charge";
+
         public override bool IsValidMove(Board board, Position to) =>
             Movement.IsClearLine(board, position, to);
     }

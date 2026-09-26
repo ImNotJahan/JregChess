@@ -33,7 +33,7 @@ namespace Views.UI
             {
                 Button button = new(() => controller.BeginUpgrade(upgrade.Id));
                 button.AddToClassList("upgrade");
-                button.AddManipulator(new TooltipTrigger(tooltip, UISprites.FormatName(upgrade.Id)));
+                button.AddManipulator(new TooltipTrigger(tooltip, PieceRegistry.Create(upgrade.Id, Piece.Color.White).GetDescription()));
 
                 Image image = UISprites.CreateImage(null, "upgrade__image");
                 button.Add(image);

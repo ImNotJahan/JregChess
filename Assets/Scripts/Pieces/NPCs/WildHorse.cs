@@ -9,6 +9,8 @@ namespace Pieces.NPCs
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "";
+
         public override bool IsValidMove(Board board, Position to) => true;
 
         /// <summary>

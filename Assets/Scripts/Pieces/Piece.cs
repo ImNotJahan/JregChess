@@ -43,6 +43,8 @@ namespace Pieces
         /// </summary>
         public abstract string GetId();
 
+        public abstract string GetDescription();
+
         /// <summary>
         /// In squares. The piece's position is its bottom left square.
         /// </summary>

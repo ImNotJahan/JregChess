@@ -12,6 +12,8 @@ namespace Pieces.Shop
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "A bishop with a little surprise";
+
         public override BoardType? GetAfterlife() => BoardType.Heaven;
 
         /// <summary>

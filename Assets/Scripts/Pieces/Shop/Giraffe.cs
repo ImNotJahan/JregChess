@@ -12,6 +12,8 @@ namespace Pieces.Shop
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Like a horse, but longer";
+
         /// <summary>
         /// Like a knight, but three by one.
         /// </summary>

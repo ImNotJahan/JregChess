@@ -14,6 +14,8 @@ namespace Pieces.Upgrades
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "King, but big";
+
         public override int GetWidth () => 2;
         public override int GetHeight() => 2;
 

@@ -39,7 +39,6 @@ namespace Gameplay
             new(BallQueen    .ID, Queen.ID),
             new(KnightQueen  .ID, Queen.ID, Knight.ID),
             new(AngryRook    .ID, Rook.ID),
-            new(RookTower    .ID, Rook.ID),
         };
 
         public static bool TryGet(string id, out Upgrade upgrade)

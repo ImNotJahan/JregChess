@@ -31,7 +31,6 @@ namespace Pieces
             [SuperKing    .ID] = color => new SuperKing    (color),
             [BallQueen    .ID] = color => new BallQueen    (color),
             [AngryRook    .ID] = color => new AngryRook    (color),
-            [RookTower    .ID] = color => new RookTower    (color),
 
             [Zebra  .ID] = color => new Zebra  (color),
             [Giraffe.ID] = color => new Giraffe(color),

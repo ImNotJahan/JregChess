@@ -201,7 +201,7 @@ namespace Views
             viewedBoard = type;
             selected    = null;
 
-            boardView.Bind(state.GetBoard(type));
+            if (boardView.GetBoard() != state.GetBoard(type)) boardView.Bind(state.GetBoard(type));
 
             RefreshHighlights();
 
@@ -239,7 +239,7 @@ namespace Views
         {
             if (online != null && command.GetPlayer() != online.GetLocalColor()) return false;
 
-            if (!state.Execute(command)) return false;
+            if (!Execute(command)) return false;
 
             if (online != null) online.SendCommand(command);
 
@@ -257,11 +257,21 @@ namespace Views
                     LoadState(GameState.CreateNew(seed));
                 }
                 else if (message.Command is GameCommand command &&
-                         (command.GetPlayer() == online.GetLocalColor() || !state.Execute(command)))
+                         (command.GetPlayer() == online.GetLocalColor() || !Execute(command)))
                 {
                     Debug.LogWarning($"Opponent's {command.GetId()} command was invalid here, so the games are out of sync");
                 }
             }
+        }
+
+        /// <summary>
+        /// Shows the board a move happens on first, so everyone sees it.
+        /// </summary>
+        private bool Execute(GameCommand command)
+        {
+            if (command is MoveCommand move && move.IsValid(state)) ShowBoard(move.GetFrom().GetLocation());
+
+            return state.Execute(command);
         }
 
         private void OnDisconnected(string reason) => OpponentLost?.Invoke(reason);

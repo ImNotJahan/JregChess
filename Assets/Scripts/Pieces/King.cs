@@ -11,6 +11,8 @@ namespace Pieces
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "More you got, harder you are to defeat!";
+
         public override bool IsRoyal() => true;
 
         public override bool IsValidMove(Board board, Position to)

@@ -10,6 +10,8 @@ namespace Pieces.NPCs
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Goes boom";
+
         public override bool Kill(Board board, Piece? killer)
         {
             board.Explode(position, this);

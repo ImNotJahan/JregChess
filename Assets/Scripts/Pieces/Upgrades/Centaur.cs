@@ -11,6 +11,8 @@ namespace Pieces.Upgrades
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Half-pawn, half-knight";
+
         public override bool IsValidMove(Board board, Position to)
         {
             (int dx, int dy) = GetOffset(to);

@@ -12,6 +12,8 @@ namespace Pieces.Upgrades
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "A knight who knows how to skewer";
+
         /// <summary>
         /// Knight moves, or jumps two squares straight.
         /// </summary>

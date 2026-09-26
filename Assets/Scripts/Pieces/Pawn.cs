@@ -25,6 +25,8 @@ namespace Pieces
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "A little guy with big aspirations";
+
         public bool HasMoved() => moved;
 
         /// <summary>

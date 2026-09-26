@@ -17,6 +17,8 @@ namespace Pieces.NPCs
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "";
+
         /// <summary>
         /// Can't capture.
         /// </summary>

@@ -14,6 +14,8 @@ namespace Pieces.Upgrades
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Brings the killed back to life";
+
         /// <summary>
         /// Brings the captured piece back on its side, one square back along the
         /// path it moved.

@@ -218,7 +218,6 @@ namespace Gameplay
                 {
                     Pawn  .ID => new SuicideBomber(color),
                     Knight.ID => new TrojanHorse  (color),
-                    Rook  .ID => new RookTower    (color),
                     Queen .ID => new BallQueen    (color),
                     King  .ID => new King         (color),
                     Bishop.ID => new Necromancer  (color),

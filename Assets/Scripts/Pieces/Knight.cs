@@ -11,6 +11,8 @@ namespace Pieces
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Horsey";
+
         public override bool IsValidMove(Board board, Position to)
         {
             (int dx, int dy) = GetOffset(to);

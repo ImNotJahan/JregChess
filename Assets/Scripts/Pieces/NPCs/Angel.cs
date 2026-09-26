@@ -11,6 +11,8 @@ namespace Pieces.NPCs
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "";
+
         public override int GetWidth () => 3;
         public override int GetHeight() => 3;
 

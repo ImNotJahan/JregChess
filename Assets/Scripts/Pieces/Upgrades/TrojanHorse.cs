@@ -15,6 +15,8 @@ namespace Pieces.Upgrades
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Carries a few surprises inside";
+
         /// <summary>
         /// One square forward.
         /// </summary>

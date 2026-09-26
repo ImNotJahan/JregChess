@@ -1,3 +1,4 @@
+using System.Collections;
 using Pieces;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Views
         /// </summary>
         private const float Fill = 0.85f;
 
+        private const float MoveDuration    = 0.5f;
         private const int   SortingOrder    = 10;
         private const float HealthBarHeight = 0.08f;
 
@@ -24,6 +26,7 @@ namespace Views
         private Piece              piece          = null!;
         private PieceSpriteLibrary sprites        = null!;
         private float              tileSize       = 1;
+        private Coroutine?         sliding;
 
         public static PieceView Create(Piece piece, PieceSpriteLibrary sprites, Transform parent)
         {
@@ -65,14 +68,34 @@ namespace Views
         /// Scales the sprite to fit the piece's squares, centered on
         /// <paramref name="center"/> in the parent's space.
         /// </summary>
-        public void Place(Vector3 center, float tileSize)
+        public void Place(Vector3 center, float tileSize, bool animate = false)
         {
             this.tileSize = tileSize;
 
-            transform.localPosition = center;
+            if (sliding != null) StopCoroutine(sliding);
+
+            sliding = null;
+
+            if (animate && isActiveAndEnabled) sliding = StartCoroutine(Slide(center));
+            else                               transform.localPosition = center;
 
             FitSprite();
             PlaceHealthBar();
+        }
+
+        private IEnumerator Slide(Vector3 to)
+        {
+            Vector3 from = transform.localPosition;
+
+            for (float elapsed = 0; elapsed < MoveDuration; elapsed += Time.deltaTime)
+            {
+                transform.localPosition = Vector3.Lerp(from, to, Mathf.SmoothStep(0, 1, elapsed / MoveDuration));
+
+                yield return null;
+            }
+
+            transform.localPosition = to;
+            sliding = null;
         }
 
         private void Refresh()

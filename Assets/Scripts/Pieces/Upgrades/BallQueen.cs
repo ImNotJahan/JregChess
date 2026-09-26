@@ -12,6 +12,8 @@ namespace Pieces.Upgrades
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "What if the queen could *really* jump?";
+
         /// <summary>
         /// Queen moves, or jumps to the ring of squares three away.
         /// </summary>

@@ -10,6 +10,8 @@ namespace Pieces.NPCs
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "";
+
         /// <summary>
         /// Takes the killer off the board along with itself.
         /// </summary>

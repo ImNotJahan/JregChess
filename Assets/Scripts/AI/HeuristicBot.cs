@@ -171,7 +171,6 @@ namespace AI
             TrojanHorse  .ID => 5,
             SuperBishop  .ID => 5,
             AngryRook    .ID => 6,
-            RookTower    .ID => 7,
             BishopKnight .ID => 7,
             RookKnight   .ID => 8,
             BallQueen    .ID => 11,

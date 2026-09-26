@@ -189,6 +189,8 @@ namespace Views.UI
             newGameButton = new Button(controller.NewGame) { text = "New game" };
             newGameButton.AddToClassList("hud-button");
             gameOver.GetContent().Add(newGameButton);
+
+            AddButton(gameOver.GetContent(), "Main menu", () => ReturnToMenu(null));
         }
 
         private VisualElement CreatePanel(string className)

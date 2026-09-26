@@ -29,7 +29,7 @@ namespace Views.UI
             {
                 Button button = new(() => controller.BeginBuy(item.Id));
                 button.AddToClassList("item");
-                button.AddManipulator(new TooltipTrigger(tooltip, UISprites.FormatName(item.Id)));
+                button.AddManipulator(new TooltipTrigger(tooltip, PieceRegistry.Create(item.Id, Piece.Color.White).GetDescription()));
 
                 Image image = UISprites.CreateImage(null, "item__image");
                 button.Add(image);

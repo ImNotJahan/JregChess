@@ -13,6 +13,8 @@ namespace Pieces.Upgrades
 
         public override string GetId() => ID;
 
+        public override string GetDescription() => "Nothing'll stop its charge";
+
         /// <summary>
         /// Rook moves which can jump over at most one piece.
         /// </summary>
