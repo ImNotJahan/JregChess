@@ -20,19 +20,29 @@ namespace Views
         private struct Theme
         {
             public BoardType board;
+            [Tooltip("Maps the tile texture's darkest pixel to dark and its lightest to light. Off uses the texture as is.")]
+            public bool      recolor;
             public Color     light;
             public Color     dark;
         }
+
+        private const int HighlightSortingOrder = 1;
 
         [SerializeField] private PieceSpriteLibrary sprites  = null!;
         [SerializeField] private IconLibrary        icons    = null!;
         [SerializeField] private float              tileSize = 1;
 
+        [Header("Tiles")]
+        [Tooltip("A checkerboard with a dark bottom left square, cut into one sprite per square. Must be readable, to be recolored.")]
+        [SerializeField] private Texture2D tileTexture = null!;
+        [Tooltip("Squares along each side of the tile texture")]
+        [SerializeField] private int       tileTextureSquares = 4;
+
         [SerializeField] private Theme[] themes =
         {
-            new() { board = BoardType.Normal, light = new Color32(255, 207, 159, 255), dark = new Color32(210, 140,  69, 255) },
-            new() { board = BoardType.Heaven, light = new Color32(196, 237, 242, 255), dark = new Color32(104, 210, 222, 255) },
-            new() { board = BoardType.Hell,   light = new Color32(255,   0,   0, 255), dark = new Color32(153,   0,   0, 255) },
+            new() { board = BoardType.Normal },
+            new() { board = BoardType.Heaven, recolor = true, light = new Color32(196, 237, 242, 255), dark = new Color32(104, 210, 222, 255) },
+            new() { board = BoardType.Hell,   recolor = true, light = new Color32(255,   0,   0, 255), dark = new Color32(153,   0,   0, 255) },
         };
 
         [Header("Highlights")]
@@ -51,7 +61,13 @@ namespace Views
         private readonly Dictionary<Piece, PieceView> pieceViews = new();
 
         private Board?            board;
+        private readonly Dictionary<BoardType, Sprite[,]> tileSprites = new();
+
         private SpriteRenderer[,] tiles = new SpriteRenderer[0, 0];
+        /// <summary>
+        /// Drawn over the tiles, as tinting would barely show on dark ones.
+        /// </summary>
+        private SpriteRenderer[,] highlightOverlays = new SpriteRenderer[0, 0];
         private Highlight[,]      highlights = new Highlight[0, 0];
         private Transform?        tileRoot;
         private Transform?        pieceRoot;
@@ -64,7 +80,23 @@ namespace Views
         private Transform TileRoot  => tileRoot  ??= CreateChild("Tiles");
         private Transform PieceRoot => pieceRoot ??= CreateChild("Pieces");
 
-        private void OnDestroy() => Unbind();
+        private void OnDestroy()
+        {
+            Unbind();
+
+            foreach (Sprite[,] squareSprites in tileSprites.Values)
+            {
+                // Recolored textures belong to this view; the original is an asset
+                Texture texture = squareSprites[0, 0].texture;
+
+                foreach (Sprite sprite in squareSprites)
+                    Destroy(sprite);
+
+                if (texture != tileTexture) Destroy(texture);
+            }
+
+            tileSprites.Clear();
+        }
 
         public Board? GetBoard() => board;
 
@@ -140,7 +172,7 @@ namespace Views
 
             highlights[square.GetX(), square.GetY()] = highlight;
 
-            ColorTile(square.GetX(), square.GetY());
+            UpdateTile(square.GetX(), square.GetY());
         }
 
         public void ClearHighlights()
@@ -153,7 +185,7 @@ namespace Views
                 {
                     highlights[x, y] = Highlight.None;
 
-                    ColorTile(x, y);
+                    UpdateTile(x, y);
                 }
             }
         }
@@ -168,7 +200,8 @@ namespace Views
                 foreach (SpriteRenderer tile in tiles)
                     Destroy(tile.gameObject);
 
-                tiles = new SpriteRenderer[width, height];
+                tiles             = new SpriteRenderer[width, height];
+                highlightOverlays = new SpriteRenderer[width, height];
 
                 for (int y = 0; y < height; y++)
                 {
@@ -181,7 +214,13 @@ namespace Views
                         tile.transform.localScale    = new Vector3(tileSize, tileSize, 1);
 
                         tiles[x, y] = tile.AddComponent<SpriteRenderer>();
-                        tiles[x, y].sprite = SolidSprite.Get();
+
+                        GameObject overlay = new("Highlight");
+                        overlay.transform.SetParent(tile.transform, false);
+
+                        highlightOverlays[x, y] = overlay.AddComponent<SpriteRenderer>();
+                        highlightOverlays[x, y].sprite       = SolidSprite.Get();
+                        highlightOverlays[x, y].sortingOrder = HighlightSortingOrder;
                     }
                 }
             }
@@ -191,21 +230,26 @@ namespace Views
             ClearHighlights();
         }
 
-        private void ColorTile(int x, int y)
+        private void UpdateTile(int x, int y)
         {
-            Theme theme = GetTheme(board!.GetBoardType());
-            // (0, 0) is dark, like a1
-            Color color = (x + y) % 2 == 0 ? theme.dark : theme.light;
+            Sprite[,] squareSprites = GetTileSprites(GetTheme(board!.GetBoardType()));
 
-            color = highlights[x, y] switch
+            // The texture's bottom left square is dark, like a1, so its squares line up with the board's
+            tiles[x, y].sprite = squareSprites[x % squareSprites.GetLength(0), y % squareSprites.GetLength(1)];
+
+            Color? highlightColor = highlights[x, y] switch
             {
-                Highlight.Selected => Color.Lerp(color, selectedColor, highlightStrength),
-                Highlight.Move     => Color.Lerp(color, moveColor,     highlightStrength),
-                Highlight.Capture  => Color.Lerp(color, captureColor,  highlightStrength),
-                _                  => color
+                Highlight.Selected => selectedColor,
+                Highlight.Move     => moveColor,
+                Highlight.Capture  => captureColor,
+                _                  => null
             };
 
-            tiles[x, y].color = color;
+            SpriteRenderer overlay = highlightOverlays[x, y];
+            overlay.enabled = highlightColor.HasValue;
+
+            if (highlightColor is Color color)
+                overlay.color = new Color(color.r, color.g, color.b, highlightStrength);
         }
 
         private Theme GetTheme(BoardType type)
@@ -213,7 +257,71 @@ namespace Views
             foreach (Theme theme in themes)
                 if (theme.board == type) return theme;
 
-            return new Theme { board = type, light = Color.white, dark = Color.gray };
+            return new Theme { board = type };
+        }
+
+        /// <summary>
+        /// Indexed by square in the tile texture, from the bottom left.
+        /// </summary>
+        private Sprite[,] GetTileSprites(Theme theme)
+        {
+            if (tileSprites.TryGetValue(theme.board, out Sprite[,]? cached)) return cached;
+
+            Texture2D texture = theme.recolor ? Recolor(tileTexture, theme.dark, theme.light) : tileTexture;
+
+            int   squares    = tileTextureSquares;
+            float squareSize = (float)texture.width / squares;
+
+            Sprite[,] squareSprites = new Sprite[squares, squares];
+
+            for (int y = 0; y < squares; y++)
+            {
+                for (int x = 0; x < squares; x++)
+                {
+                    Rect rect = new(x * squareSize, y * squareSize, squareSize, squareSize);
+
+                    // One square per world unit, like the tile transforms expect
+                    squareSprites[x, y] = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), squareSize, 0, SpriteMeshType.FullRect);
+                }
+            }
+
+            tileSprites[theme.board] = squareSprites;
+
+            return squareSprites;
+        }
+
+        /// <summary>
+        /// Maps brightness onto a gradient from <paramref name="dark"/> to <paramref name="light"/>.
+        /// </summary>
+        private static Texture2D Recolor(Texture2D source, Color dark, Color light)
+        {
+            Color32[] pixels = source.GetPixels32();
+            float[]   values = new float[pixels.Length];
+
+            float min = 1;
+            float max = 0;
+
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                values[i] = ((Color)pixels[i]).grayscale;
+
+                min = Mathf.Min(min, values[i]);
+                max = Mathf.Max(max, values[i]);
+            }
+
+            for (int i = 0; i < pixels.Length; i++)
+                pixels[i] = Color.Lerp(dark, light, Mathf.InverseLerp(min, max, values[i]));
+
+            Texture2D result = new(source.width, source.height, TextureFormat.RGBA32, false)
+            {
+                filterMode = source.filterMode,
+                wrapMode   = TextureWrapMode.Clamp
+            };
+
+            result.SetPixels32(pixels);
+            result.Apply(false, true);
+
+            return result;
         }
 
         private void OnPieceAdded(Piece piece)

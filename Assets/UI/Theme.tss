@@ -1,1 +1,6 @@
 @import url("unity-theme://default");
+
+/* The default theme sets its own font, which overrides the panel text settings' default */
+:root {
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts/Cinzel/Cinzel-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5700e58b44a264dce80841b12442b8a3&type=2#Cinzel-VariableFont_wght SDF");
+}

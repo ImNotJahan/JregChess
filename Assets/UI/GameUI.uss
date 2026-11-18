@@ -97,7 +97,7 @@
 }
 
 .turn-label {
-    font-size: 18px;
+    font-size: 16px;
     -unity-font-style: bold;
     letter-spacing: 2px;
     margin-bottom: 6px;
