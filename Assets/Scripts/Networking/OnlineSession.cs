@@ -51,7 +51,11 @@ namespace Networking
         }
 
         private const string MessageName    = "jress";
-        private const string ConnectionType = "dtls";
+        /// <summary>
+        /// Secure WebSockets, as browsers can't use UDP. Everyone has to use the same
+        /// kind, so desktop uses it too in order to play against the web.
+        /// </summary>
+        private const string ConnectionType = "wss";
 
         /// <summary>
         /// Both players are connected and the first game's seed is known.
@@ -177,6 +181,9 @@ namespace Networking
 
             UnityTransport transport = obj.AddComponent<UnityTransport>();
             NetworkManager network   = obj.AddComponent<NetworkManager>();
+
+            // to match ConnectionType
+            transport.UseWebSockets = true;
 
             network.NetworkConfig = new NetworkConfig
             {

@@ -42,6 +42,13 @@ namespace Views.UI
             fullscreenToggle = new Toggle("Fullscreen");
             fullscreenToggle.AddToClassList("settings__toggle");
             fullscreenToggle.RegisterValueChangedCallback(change => GameSettings.SetFullscreen(change.newValue));
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // The toggle changes on release, too late for the browser to allow fullscreen
+            // until the next click, so ask on the press instead
+            fullscreenToggle.RegisterCallback<PointerDownEvent>(
+                _ => GameSettings.SetFullscreen(!fullscreenToggle.value),
+                TrickleDown.TrickleDown);
+#endif
             content.Add(fullscreenToggle);
 
             Refresh();

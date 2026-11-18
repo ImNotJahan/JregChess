@@ -47,6 +47,8 @@ namespace Views
         [SerializeField] private Camera    inputCamera = null!;
         [Tooltip("Seconds between the bot's actions")]
         [SerializeField] private float     botDelay    = 0.5f;
+        [Tooltip("On the web, milliseconds a frame the bot spends thinking")]
+        [SerializeField] private float     botThinkMs  = 8;
 
         private GameState state       = null!;
         private BoardType viewedBoard = BoardType.Normal;
@@ -72,6 +74,20 @@ namespace Views
         /// </summary>
         private bool        botStuck;
 
+        /// <summary>
+        /// The web can't run C# on other threads, so there the bot thinks a little each
+        /// frame instead.
+        /// </summary>
+#if UNITY_WEBGL && !UNITY_EDITOR
+        private static readonly bool BotThinksOnThread = false;
+#else
+        private static readonly bool BotThinksOnThread = true;
+#endif
+
+        private BotTurn?                 botTurn;
+        /// <summary>
+        /// Working out <see cref="botTurn"/>, when <see cref="BotThinksOnThread"/>.
+        /// </summary>
         private Task<GameCommand?>?      botTask;
         private CancellationTokenSource? botCancellation;
 
@@ -280,9 +296,9 @@ namespace Views
         {
             if (bot == null) return;
 
-            if (botTask != null)
+            if (botTurn != null)
             {
-                if (botTask.IsCompleted) FinishBotTurn();
+                ContinueBotTurn();
 
                 return;
             }
@@ -290,27 +306,56 @@ namespace Views
             if (botStuck || state.IsOver()) return;
             if (GetActingPlayer() != botColor || Time.time < botReadyTime) return;
 
-            Bot         thinker  = bot;
-            Piece.Color color    = botColor;
-            GameState   snapshot = state.Clone();
+            BotTurn turn = bot.StartTurn(state.Clone(), botColor);
 
-            botCancellation = new CancellationTokenSource();
-            CancellationToken token = botCancellation.Token;
+            botTurn = turn;
 
-            botTask = Task.Run(() => thinker.HandleTurn(snapshot, color, token), token);
+            if (BotThinksOnThread)
+            {
+                botCancellation = new CancellationTokenSource();
+                CancellationToken token = botCancellation.Token;
+
+                botTask = Task.Run(() => turn.Finish(token), token);
+            }
+
+            ContinueBotTurn();
         }
 
-        private void FinishBotTurn()
+        /// <summary>
+        /// Lets the bot think some more, and submits its command once it has one.
+        /// </summary>
+        private void ContinueBotTurn()
         {
-            Task<GameCommand?> task = botTask!;
+            GameCommand? command;
 
+            if (botTask != null)
+            {
+                if (!botTask.IsCompleted) return;
+
+                if (botTask.IsFaulted) Debug.LogException(botTask.Exception!.GetBaseException());
+
+                command = botTask.IsCompletedSuccessfully ? botTask.Result : null;
+            }
+            else
+            {
+                try
+                {
+                    if (!botTurn!.Work(botThinkMs)) return;
+
+                    command = botTurn.GetCommand();
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+
+                    command = null;
+                }
+            }
+
+            botTurn = null;
             botTask = null;
             botCancellation?.Dispose();
             botCancellation = null;
-
-            if (task.IsFaulted) Debug.LogException(task.Exception!.GetBaseException());
-
-            GameCommand? command = task.IsCompletedSuccessfully ? task.Result : null;
 
             if (command != null && Submit(command)) return;
 
@@ -326,6 +371,7 @@ namespace Views
             botCancellation?.Cancel();
             botCancellation = null;
             botTask         = null;
+            botTurn         = null;
         }
 
         private void SetMode(Mode newMode, string? item, BoardType? board)

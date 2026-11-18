@@ -29,6 +29,12 @@ namespace Views
 
         public static void SetFullscreen(bool fullscreen)
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // The browser picks the size. It only allows going fullscreen during a click or
+            // key press, so Unity holds the request until the next one: call this on the
+            // press so it happens on the release.
+            Screen.fullScreen = fullscreen;
+#else
             if (fullscreen)
             {
                 Resolution display = Screen.currentResolution;
@@ -39,6 +45,7 @@ namespace Views
             {
                 Screen.fullScreenMode = FullScreenMode.Windowed;
             }
+#endif
         }
     }
 }

@@ -68,7 +68,10 @@ namespace Views.UI
             AddButton(menu, "Play local",  PlayLocal);
             AddButton(menu, "Play online", OpenOnlineWindow);
             AddButton(menu, "Settings",    OpenSettingsWindow);
+#if !UNITY_WEBGL || UNITY_EDITOR
+            // a web page can't close itself
             AddButton(menu, "Exit",        Exit);
+#endif
 
             windowLayer = new VisualElement { pickingMode = PickingMode.Ignore };
             windowLayer.AddToClassList("layer");

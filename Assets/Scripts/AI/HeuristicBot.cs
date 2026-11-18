@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using Boards;
 using Gameplay;
 using Gameplay.Commands;
@@ -22,35 +22,52 @@ namespace AI
 
         protected int depthLimit = DefaultDepth;
 
-        private CancellationToken cancellation;
-
         public void SetDepthLimit(int depth) => depthLimit = System.Math.Max(depth, MinDepth);
 
-        public override GameCommand? HandleTurn(GameState state, Piece.Color player, CancellationToken cancellation = default)
+        protected override IEnumerator Think(GameState state, Piece.Color player, BotTurn turn)
         {
-            this.cancellation = cancellation;
+            Outcome outcome = new();
 
-            return FindBestMove(state, player).bestMove;
+            yield return FindBestMove(state, player, outcome);
+
+            turn.SetCommand(outcome.bestMove);
         }
 
-        private (GameCommand? bestMove, int bestMoveScore) FindBestMove(
-            GameState   state, 
-            Piece.Color player, 
-            int         depth = 0, 
+        /// <summary>
+        /// What a search found.
+        /// </summary>
+        private sealed class Outcome
+        {
+            public GameCommand? bestMove;
+            public int          bestMoveScore;
+        }
+
+        /// <summary>
+        /// Puts what it finds in <paramref name="outcome"/>. Pauses before each command it
+        /// looks into, so it runs in steps (see <see cref="BotTurn"/>).
+        /// </summary>
+        private IEnumerator FindBestMove(
+            GameState   state,
+            Piece.Color player,
+            Outcome     outcome,
+            int         depth = 0,
             int         ply   = 0,
             int         alpha = -INFINITY, // best score we have so far
             int         beta  = INFINITY   // best score optimal opponent will allow
         )
         {
-            if (depth > depthLimit || state.IsOver()) return (null, ScoreTerminal(state, player, depth));
+            if (depth > depthLimit || state.IsOver())
+            {
+                outcome.bestMoveScore = ScoreTerminal(state, player, depth);
+
+                yield break;
+            }
 
             int          bestMoveScore = 0;
             GameCommand? bestMove      = null;
 
             foreach (GameCommand command in GetCandidates(state, player, ply))
             {
-                cancellation.ThrowIfCancellationRequested();
-
                 // TODO it can see the future....
                 GameState? newState = state.ExecuteOnCopy(command);
 
@@ -60,10 +77,15 @@ namespace AI
 
                 Piece.Color next = newState.GetDecision()?.GetPlayer() ?? newState.GetTurn();
 
-                int score = next == player
-                    ? FindBestMove(newState, player, newDepth, ply + 1, alpha, beta).bestMoveScore
-                    // we negate it as this finds the best score for *our opponent*, which is our worst score
-                    : -FindBestMove(newState, next, newDepth, ply + 1, -beta, -alpha).bestMoveScore;
+                Outcome reply = new();
+
+                // finishes the search below before carrying on
+                yield return next == player
+                    ? FindBestMove(newState, player, reply, newDepth, ply + 1, alpha, beta)
+                    : FindBestMove(newState, next, reply, newDepth, ply + 1, -beta, -alpha);
+
+                // we negate it as that found the best score for *our opponent*, which is our worst score
+                int score = next == player ? reply.bestMoveScore : -reply.bestMoveScore;
 
                 if (bestMove is null || score > bestMoveScore)
                 {
@@ -78,9 +100,15 @@ namespace AI
             }
 
             // couldn't do anything: just check what the board's like
-            if (bestMove is null) return (null, ScoreTerminal(state, player, depth));
+            if (bestMove is null)
+            {
+                outcome.bestMoveScore = ScoreTerminal(state, player, depth);
 
-            return (bestMove, bestMoveScore);
+                yield break;
+            }
+
+            outcome.bestMove      = bestMove;
+            outcome.bestMoveScore = bestMoveScore;
         }
 
         private IEnumerable<GameCommand> GetCandidates(GameState state, Piece.Color player, int ply)

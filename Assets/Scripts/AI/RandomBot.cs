@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using Gameplay;
 using Gameplay.Commands;
 using Pieces;
@@ -18,7 +18,14 @@ namespace AI
 
         public override string GetName() => "Randy";
 
-        public override GameCommand? HandleTurn(GameState state, Piece.Color player, CancellationToken cancellation = default)
+        protected override IEnumerator Think(GameState state, Piece.Color player, BotTurn turn)
+        {
+            turn.SetCommand(Choose(state, player));
+
+            yield break;
+        }
+
+        private GameCommand? Choose(GameState state, Piece.Color player)
         {
             List<ResolveDecisionCommand> choices = GetDecisionChoices(state, player);
 

@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using Gameplay;
 using Gameplay.Commands;
 using Pieces;
@@ -12,7 +12,17 @@ namespace AI
     {
         public abstract string GetName();
 
-        public abstract GameCommand? HandleTurn(GameState state, Piece.Color player, CancellationToken cancellation = default);
+        /// <summary>
+        /// Starts working out <paramref name="player"/>'s next command. Nothing runs
+        /// until the turn is worked on.
+        /// </summary>
+        public BotTurn StartTurn(GameState state, Piece.Color player) => new(turn => Think(state, player, turn));
+
+        /// <summary>
+        /// Works out the command in steps (see <see cref="BotTurn"/>), and gives it to
+        /// <see cref="BotTurn.SetCommand"/>.
+        /// </summary>
+        protected abstract IEnumerator Think(GameState state, Piece.Color player, BotTurn turn);
 
         protected static List<MoveCommand> GetMoves(GameState state, Piece.Color player) =>
             Actions.GetMoves(state, player);
