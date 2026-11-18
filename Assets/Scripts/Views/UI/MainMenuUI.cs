@@ -172,7 +172,7 @@ namespace Views.UI
 
             AddHint(content, "Higher depth = a stronger, and laggier, bot");
 
-            AddHint(content, "Bot");
+            AddHint(content, "Which bot?");
 
             foreach (Bot bot in BotRegistry.CreateAll())
             {

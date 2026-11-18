@@ -10,7 +10,6 @@ namespace AI
     {
         private static readonly Func<Bot>[] factories =
         {
-            () => new RandomBot(),
             () => new Jahan()
         };
 
