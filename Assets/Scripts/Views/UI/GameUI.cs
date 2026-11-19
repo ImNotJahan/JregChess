@@ -35,6 +35,7 @@ namespace Views.UI
 
         private UISprites     sprites     = null!;
         private VisualElement root        = null!;
+        private VisualElement boardFrame  = null!;
         private VisualElement leftPanel   = null!;
         private VisualElement rightPanel  = null!;
         private VisualElement windowLayer = null!;
@@ -71,6 +72,10 @@ namespace Views.UI
             tooltip = new Tooltip();
             CreateLayer("tooltip-layer").Add(tooltip);
 
+            boardFrame = new VisualElement { pickingMode = PickingMode.Ignore };
+            boardFrame.AddToClassList("board-frame");
+            root.Insert(0, boardFrame);
+
             BuildLeftPanel();
             BuildRightPanel();
             BuildWindows();
@@ -92,7 +97,11 @@ namespace Views.UI
             controller.OpponentLost -= ReturnToMenu;
         }
 
-        private void LateUpdate() => PositionPanels();
+        private void LateUpdate()
+        {
+            PositionPanels();
+            PositionBoardFrame();
+        }
 
         private VisualElement CreateLayer(string className)
         {
@@ -382,6 +391,30 @@ namespace Views.UI
 
             rightPanel.style.left = bottomRight.x + panelGap;
             rightPanel.style.top  = topLeft.y;
+        }
+
+        /// <summary>
+        /// Wraps the frame around the board, with its border outside the squares.
+        /// </summary>
+        private void PositionBoardFrame()
+        {
+            if (root?.panel == null) return;
+
+            Bounds bounds = boardView.GetWorldBounds();
+
+            boardFrame.style.display = bounds.size == Vector3.zero ? DisplayStyle.None : DisplayStyle.Flex;
+
+            if (bounds.size == Vector3.zero) return;
+
+            Vector2 topLeft     = WorldToPanel(new Vector3(bounds.min.x, bounds.max.y));
+            Vector2 bottomRight = WorldToPanel(new Vector3(bounds.max.x, bounds.min.y));
+
+            IResolvedStyle border = boardFrame.resolvedStyle;
+
+            boardFrame.style.left   = topLeft.x - border.borderLeftWidth;
+            boardFrame.style.top    = topLeft.y - border.borderTopWidth;
+            boardFrame.style.width  = bottomRight.x - topLeft.x + border.borderLeftWidth + border.borderRightWidth;
+            boardFrame.style.height = bottomRight.y - topLeft.y + border.borderTopWidth  + border.borderBottomWidth;
         }
 
         private Vector2 GetBoardTopLeft()

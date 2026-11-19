@@ -32,6 +32,16 @@
     bottom: 0;
 }
 
+/* Board */
+
+/* Positioned around the board by GameUI; the border sits outside the squares */
+.board-frame {
+    position: absolute;
+    border-color: var(--slab);
+    border-width: 12px;
+    border-radius: 0;
+}
+
 /* Side panels */
 
 .side-panel {
