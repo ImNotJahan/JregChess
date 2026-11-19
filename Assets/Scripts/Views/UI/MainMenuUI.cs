@@ -4,6 +4,7 @@ using AI;
 using Networking;
 using Pieces;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
@@ -20,6 +21,7 @@ namespace Views.UI
         [SerializeField] private string     gameScene        = "Game";
 
         private const int SliderMaxDepth = 3;
+        private const int MaxCodeLength  = 16;
 
         private readonly Dictionary<Piece.Color, Button> colorButtons = new();
 
@@ -34,11 +36,18 @@ namespace Views.UI
         private Button    copyButton   = null!;
         private Label     hostStatus   = null!;
         private Window    joinWindow   = null!;
-        private TextField codeField    = null!;
+        private Label     codeField    = null!;
         private Button    joinButton   = null!;
         private Label     joinStatus   = null!;
 
         private SettingsWindow settingsWindow = null!;
+
+        /// <summary>
+        /// Typed into the join window. Read straight from the keyboard, since a
+        /// TextField can't be focused on web.
+        /// </summary>
+        private string    code = "";
+        private Keyboard? codeKeyboard;
 
         /// <summary>
         /// The session whose start is being waited for.
@@ -106,7 +115,28 @@ namespace Views.UI
             menu.RegisterCallback<GeometryChangedEvent>(Open);
         }
 
-        private void OnDestroy() => Unwatch();
+        private void OnDestroy()
+        {
+            Unwatch();
+            StopTypingCode();
+        }
+
+        private void Update()
+        {
+            if (codeKeyboard == null || !joinButton.enabledSelf) return;
+
+            if (codeKeyboard.backspaceKey.wasPressedThisFrame && code.Length > 0)
+                SetCode(code[..^1]);
+
+            if (codeKeyboard.enterKey.wasPressedThisFrame || codeKeyboard.numpadEnterKey.wasPressedThisFrame)
+                JoinGame();
+
+            bool shortcut = codeKeyboard.ctrlKey.isPressed || codeKeyboard.leftMetaKey.isPressed || codeKeyboard.rightMetaKey.isPressed;
+
+            // the web build can't read the browser's clipboard, so this only pastes there what the game copied
+            if (shortcut && codeKeyboard.vKey.wasPressedThisFrame)
+                SetCode(GUIUtility.systemCopyBuffer);
+        }
 
         /// <param name="onClick">Null disables the button.</param>
         private static void AddButton(VisualElement parent, string text, Action? onClick)
@@ -207,22 +237,25 @@ namespace Views.UI
             hostWindow.GetContent().Add(hostCode);
 
             copyButton = AddWindowButton(hostWindow.GetContent(), "Copy code", () => GUIUtility.systemCopyBuffer = hostCode.text);
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // the browser's clipboard isn't reachable, so the code has to be copied by hand
+            copyButton.style.display = DisplayStyle.None;
+#endif
 
             hostStatus = AddHint(hostWindow.GetContent(), "");
 
             joinWindow = new Window("Join game");
             joinWindow.AddToClassList("online");
             joinWindow.Closed += OnlineSession.LeaveCurrent;
+            joinWindow.Closed += StopTypingCode;
 
             AddHint(joinWindow.GetContent(), "Code");
 
-            codeField = new TextField { maxLength = 16 };
+            codeField = new Label();
             codeField.AddToClassList("online__code-field");
-            codeField.RegisterCallback<KeyDownEvent>(evt =>
-            {
-                if (evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter) JoinGame();
-            }, TrickleDown.TrickleDown);
             joinWindow.GetContent().Add(codeField);
+
+            SetCode("");
 
             joinButton = AddWindowButton(joinWindow.GetContent(), "Join", JoinGame);
 
@@ -321,13 +354,52 @@ namespace Views.UI
             joinButton.SetEnabled(true);
             joinStatus.text = "";
 
-            codeField.Focus();
+            StartTypingCode();
+        }
+
+        private void StartTypingCode()
+        {
+            StopTypingCode();
+
+            codeKeyboard = Keyboard.current;
+            if (codeKeyboard != null) codeKeyboard.onTextInput += OnCodeTyped;
+        }
+
+        private void StopTypingCode()
+        {
+            if (codeKeyboard != null) codeKeyboard.onTextInput -= OnCodeTyped;
+            codeKeyboard = null;
+        }
+
+        private void OnCodeTyped(char character)
+        {
+            if (codeKeyboard == null || !joinButton.enabledSelf) return;
+
+            // leave shortcuts like paste to Update
+            if (codeKeyboard.ctrlKey.isPressed || codeKeyboard.leftMetaKey.isPressed || codeKeyboard.rightMetaKey.isPressed) return;
+
+            SetCode(code + character);
+        }
+
+        /// <summary>
+        /// Keeps only letters and digits, which is all a join code has.
+        /// </summary>
+        private void SetCode(string text)
+        {
+            System.Text.StringBuilder cleaned = new();
+
+            foreach (char character in text.ToUpperInvariant())
+                if (character is >= 'A' and <= 'Z' or >= '0' and <= '9' && cleaned.Length < MaxCodeLength)
+                    cleaned.Append(character);
+
+            code = cleaned.ToString();
+
+            codeField.text = code.Length > 0 ? code : "Type the code";
+            codeField.EnableInClassList("online__code-field--empty", code.Length == 0);
         }
 
         private async void JoinGame()
         {
-            string code = codeField.value.Trim().ToUpperInvariant();
-
             if (code.Length == 0 || !joinButton.enabledSelf) return;
 
             joinButton.SetEnabled(false);

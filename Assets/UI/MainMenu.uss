@@ -133,12 +133,10 @@
     color: var(--accent);
 }
 
-.online__code-field {
-    margin: 0 0 8px 0;
-}
-
-.online__code-field .unity-base-text-field__input {
+/* A label typed into from the keyboard while the join window is open */
+.online .online__code-field {
     height: 40px;
+    margin: 0 0 8px 0;
     padding: 0 6px;
     font-size: 24px;
     -unity-font-style: bold;
@@ -146,11 +144,14 @@
     letter-spacing: 4px;
     color: var(--text);
     background-color: var(--button-bg);
-    border-color: var(--slab);
+    border-color: var(--accent);
     border-width: 2px 4px 4px 2px;
     border-radius: 0;
 }
 
-.online__code-field:focus .unity-base-text-field__input {
-    border-color: var(--accent);
+.online .online__code-field--empty {
+    font-size: 16px;
+    -unity-font-style: normal;
+    letter-spacing: 1px;
+    color: var(--text-dim);
 }

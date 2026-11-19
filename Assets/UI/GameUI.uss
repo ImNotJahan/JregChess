@@ -88,7 +88,7 @@
 }
 
 .hud-button--active {
-    color: rgb(236, 232, 212);
+    /*color: var(--slab);*/
     background-color: var(--accent);
 }
 
@@ -275,7 +275,7 @@
 .item__name {
     width: 100%;
     flex-grow: 1;
-    font-size: 12px;
+    font-size: 10px;
     -unity-text-align: middle-center;
     white-space: normal;
 }
