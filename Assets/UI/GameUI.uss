@@ -10,9 +10,9 @@
     --button-hover: rgb(110, 110, 106);
 
     /* Moss */
-    --accent: rgb(132, 178, 78);
-    --accent-deep: rgb(58, 88, 38);
-    --button-active: rgb(58, 88, 38);
+    --accent: rgb(96, 120, 56);
+    --accent-deep: rgb(42, 54, 28);
+    --button-active: rgb(42, 54, 28);
 }
 
 .game-ui {
@@ -88,7 +88,7 @@
 }
 
 .hud-button--active {
-    color: var(--slab);
+    color: rgb(236, 232, 212);
     background-color: var(--accent);
 }
 
@@ -165,8 +165,6 @@
     white-space: normal;
     color: var(--text-dim);
     font-size: 14px;
-    border-left-width: 2px;
-    border-color: var(--text-dim);
 }
 
 /* Windows */
